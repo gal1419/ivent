@@ -2,7 +2,12 @@
     <string name="app_name">Ivent</string>
     <string name="title_activity_login">Sign in</string>
 
-    <!-- Strings related to login -->
+    <!-- main -->
+    <string name="backdrop_title">DON\'T MISS A THING</string>
+    <string name="backdrop_subtitle">Relive your adventures</string>
+
+
+    <!-- login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -14,4 +19,11 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+
+    <!-- Event Card View -->
+    <string name="action_settings">Settings</string>
+    <string name="action_add_favourite">Add Event</string>
+    <string name="action_play_next">Play Next</string>
+
 </resources>
