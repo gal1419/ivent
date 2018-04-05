@@ -5,8 +5,11 @@ package ivent.com.ivent.Adapter;
  */
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,13 +35,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     private List<Event> eventList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.title) TextView title;
-        @BindView(R.id.count) TextView count;
-        @BindView(R.id.thumbnail) ImageView thumbnail;
-        @BindView(R.id.overflow) ImageView overflow;
+
+        private TextView title;
+        private TextView count;
+        private ImageView thumbnail;
+        private ImageView overflow;
 
         public MyViewHolder(View view) {
             super(view);
+
+            title = view.findViewById(R.id.title);
+            count = view.findViewById(R.id.count);
+            thumbnail = view.findViewById(R.id.thumbnail);
+            overflow = view.findViewById(R.id.thumbnail);
         }
     }
 
@@ -65,12 +74,25 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         // loading event cover using Glide library
         //Glide.with(mContext).load(event.get()).into(holder.thumbnail);
 
+        holder.thumbnail.setImageBitmap(StringToBitMap(event.getImage()));
+
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPopupMenu(holder.overflow);
             }
         });
+    }
+
+    public Bitmap StringToBitMap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 
     /**

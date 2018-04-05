@@ -25,9 +25,18 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.Dark"/>
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".SignupActivity"
-            android:theme="@style/AppTheme.Dark"></activity>
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".AddNewEventActivity"
+            android:label="@string/title_activity_add_new_event"
+            android:theme="@style/AppTheme.Dark">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ivent.com.ivent.MainActivity" />
+        </activity>
     </application>
+
 </manifest>

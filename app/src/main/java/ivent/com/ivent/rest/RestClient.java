@@ -1,17 +1,16 @@
 package ivent.com.ivent.rest;
 
 import android.content.Context;
+import android.content.Intent;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import ivent.com.ivent.BuildConfig;
+import ivent.com.ivent.LoginActivity;
 import ivent.com.ivent.service.AuthenticationService;
 import okhttp3.Headers;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,8 +20,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RestClient {
+    private static Context context;
     private static final String BASE_URL = "http://10.0.2.2:8080/";
     private static ApiService apiService = null;
+
+
+    public static void setContext(Context appContext) {
+        context = appContext;
+    }
 
     public static ApiService getApiService() {
 
@@ -49,6 +54,23 @@ public class RestClient {
             }
 
             return chain.proceed(request);
+        });
+
+        builder.addInterceptor(chain -> {
+            Request request = chain.request();
+            okhttp3.Response response = chain.proceed(request);
+
+            if (response.code() == 401) {
+                AuthenticationService.clearToken(context);
+                context.startActivity(
+                        new Intent(
+                                context.getApplicationContext(),
+                                LoginActivity.class
+                        )
+                );
+                return response;
+            }
+            return response;
         });
 
         OkHttpClient client = builder.build();

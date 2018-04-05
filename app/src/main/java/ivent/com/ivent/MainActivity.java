@@ -1,5 +1,6 @@
 package ivent.com.ivent;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -22,17 +24,25 @@ import java.util.List;
 
 import ivent.com.ivent.Adapter.EventAdapter;
 import ivent.com.ivent.model.Event;
+import ivent.com.ivent.rest.ApiService;
+import ivent.com.ivent.rest.RestClient;
 import ivent.com.ivent.service.AuthenticationService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EventAdapter adapter;
-    private List<Event> eventList;
+    private List<Event> eventList = new ArrayList<>();
+    private ApiService apiService = RestClient.getApiService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        RestClient.setContext(getApplicationContext());
 
         String loginToken = AuthenticationService.getAuthToken(getApplicationContext());
         if (loginToken.equals("")) {
@@ -41,14 +51,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         initCollapsingToolbar();
-
         recyclerView = findViewById(R.id.recycler_view);
-
         eventList = new ArrayList<>();
         adapter = new EventAdapter(this, eventList);
 
@@ -57,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
         prepareEvents();
 
         try {
@@ -67,15 +73,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void onAddEventClicked(View view) {
+        Intent intent = new Intent(getApplicationContext(), AddNewEventActivity.class);
+        startActivity(intent);
+    }
+
     /**
      * Initializing collapsing toolbar
      * Will show and hide the toolbar title on scroll
      */
     private void initCollapsingToolbar() {
-        final CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        final CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(" ");
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        AppBarLayout appBarLayout = findViewById(R.id.appbar);
         appBarLayout.setExpanded(true);
 
         // hiding & showing the title when toolbar expanded & collapsed
@@ -101,15 +111,70 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void prepareEvents() {
+        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Getting Events...");
+        progressDialog.show();
 
-        adapter.notifyDataSetChanged();
+        Call<List<Event>> call = apiService.getUserEvents();
+
+        call.enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                progressDialog.dismiss();
+                if (!response.isSuccessful()) {
+                    onEventsFetchFailed();
+                    return;
+                }
+                onEventsFetchSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable throwable) {
+                progressDialog.dismiss();
+                onEventsFetchFailed();
+            }
+        });
+    }
+
+    private void onEventsFetchSuccess(List<Event> events) {
+        this.eventList.clear();
+        this.eventList.addAll(events);
+        this.adapter.notifyDataSetChanged();
+    }
+
+    private void onEventsFetchFailed() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // disable going back to the MainActivity
+        moveTaskToBack(true);
+    }
+
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        //Refresh your stuff here
+        prepareEvents();
+    }
+
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
         private int spanCount;
         private int spacing;
         private boolean includeEdge;
@@ -141,13 +206,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    /**
-     * Converting dp to pixel
-     */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 }

@@ -25,12 +25,19 @@ public class AuthenticationService {
     }
 
     public static void setAuthToken(Context context, String authToken) {
+        clearToken(context);
         SharedPreferences sharedPreferences = context.getSharedPreferences("ivent.com.ivent", Context.MODE_PRIVATE);
         sharedPreferences.edit().putString("login-token", authToken).apply();
     }
 
     public static boolean isUserLoggedIn() {
         return !authToken.equals("");
+    }
+
+    public static void clearToken(Context context) {
+        authToken = "";
+        SharedPreferences sharedPreferences = context.getSharedPreferences("ivent.com.ivent", Context.MODE_PRIVATE);
+        sharedPreferences.edit().remove("login-token");
     }
 
 }

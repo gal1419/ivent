@@ -25,8 +25,8 @@ public class Event {
     @SerializedName("participants")
     private List<User> participants;
 
-    @SerializedName("thumbnail")
-    private String thumbnail;
+    @SerializedName("image")
+    private String image;
 
 
     public Event() {
@@ -81,12 +81,12 @@ public class Event {
         this.participants.add(user);
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getImage() {
+        return image;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setImage(String image) {
+        this.image = image;
     }
 }
 
