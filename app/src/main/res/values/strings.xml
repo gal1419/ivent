@@ -23,9 +23,10 @@
 
     <!-- Event Card View -->
     <string name="action_settings">Settings</string>
-    <string name="action_add_favourite">Add Event</string>
+    <string name="action_add_event">Add Event</string>
     <string name="action_play_next">Play Next</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_add_new_event">AddNewEventActivity</string>
+    <string name="title_activity_event_pictures">EventPicturesActivity</string>
 
 </resources>

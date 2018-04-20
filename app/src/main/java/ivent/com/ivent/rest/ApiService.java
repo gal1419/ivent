@@ -3,6 +3,7 @@ package ivent.com.ivent.rest;
 import java.util.List;
 
 import ivent.com.ivent.model.Event;
+import ivent.com.ivent.model.Picture;
 import ivent.com.ivent.model.User;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -13,6 +14,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by galmalachi on 10/02/2018.
@@ -29,6 +32,9 @@ public interface ApiService {
 
     @GET("users/events")
     Call<List<Event>> getUserEvents();
+
+    @GET("picture/event/{eventId}")
+    Call<List<Picture>> getEventPictures(@Path("eventId") String eventId);
 
     @Multipart
     @POST("upload-file/add")

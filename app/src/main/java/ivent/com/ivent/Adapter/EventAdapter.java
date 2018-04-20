@@ -5,55 +5,44 @@ package ivent.com.ivent.Adapter;
  */
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
+import ivent.com.ivent.EventPicturesActivity;
 import ivent.com.ivent.R;
 import ivent.com.ivent.model.Event;
+import ivent.com.ivent.model.Picture;
+import ivent.com.ivent.rest.ApiService;
+import ivent.com.ivent.rest.AuthHeaders;
+import ivent.com.ivent.rest.RestClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder> {
 
-    private Context mContext;
+    private Context context;
     private List<Event> eventList;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView title;
-        private TextView count;
-        private ImageView thumbnail;
-        private ImageView overflow;
-
-        public MyViewHolder(View view) {
-            super(view);
-
-            title = view.findViewById(R.id.title);
-            count = view.findViewById(R.id.count);
-            thumbnail = view.findViewById(R.id.thumbnail);
-            overflow = view.findViewById(R.id.thumbnail);
-        }
-    }
-
-
-    public EventAdapter(Context mContext, List<Event> eventList) {
-        this.mContext = mContext;
+    public EventAdapter(Context context, List<Event> eventList) {
+        this.context = context;
         this.eventList = eventList;
     }
 
@@ -68,31 +57,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Event event = eventList.get(position);
+        holder.eventId = event.getId();
         holder.title.setText(event.getTitle());
-        holder.count.setText(event.getParticipants().size() + " participants");
+        holder.count.setText(String.format("%d participants", event.getParticipants().size()));
 
         // loading event cover using Glide library
-        //Glide.with(mContext).load(event.get()).into(holder.thumbnail);
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("http").encodedAuthority("10.0.2.2:8080")
+                .appendPath("event")
+                .appendPath("thumbnail")
+                .appendPath(String.valueOf(event.getId()));
 
-        holder.thumbnail.setImageBitmap(StringToBitMap(event.getImage()));
-
-        holder.overflow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.overflow);
-            }
-        });
-    }
-
-    public Bitmap StringToBitMap(String encodedString) {
-        try {
-            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
+        Glide.with(context).load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString())).into(holder.thumbnail);
+        holder.overflow.setOnClickListener(view -> showPopupMenu(holder.overflow));
     }
 
     /**
@@ -100,11 +77,58 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
      */
     private void showPopupMenu(View view) {
         // inflate menu
-        PopupMenu popup = new PopupMenu(mContext, view);
+        PopupMenu popup = new PopupMenu(context, view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.manu_event, popup.getMenu());
         popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
         popup.show();
+    }
+
+    @Override
+    public int getItemCount() {
+        return eventList.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+
+        private Long eventId;
+        private TextView title;
+        private TextView count;
+        private ImageView thumbnail;
+        private ImageView overflow;
+
+        private GridView gridView;
+        private GridViewAdapter gridAdapter;
+        private ApiService apiService = RestClient.getApiService();
+
+
+        public MyViewHolder(View view) {
+            super(view);
+
+            title = view.findViewById(R.id.title);
+            count = view.findViewById(R.id.count);
+            thumbnail = view.findViewById(R.id.thumbnail);
+            overflow = view.findViewById(R.id.overflow);
+
+            view.setOnClickListener(v ->  {
+
+                Call<List<Picture>> call = apiService.getEventPictures(String.valueOf(eventId));
+                call.enqueue(new Callback<List<Picture>>() {
+                    @Override
+                    public void onResponse(Call<List<Picture>> call, Response<List<Picture>> response) {
+                        Intent intent = new Intent(context, EventPicturesActivity.class);
+                        ArrayList<Picture> list = new ArrayList<>();
+                        list.addAll(response.body());
+                        intent.putParcelableArrayListExtra("PictureList", list);
+                        context.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Picture>> call, Throwable throwable) {
+                    }
+                });
+            });
+        }
     }
 
     /**
@@ -118,20 +142,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
-                case R.id.action_add_favourite:
-                    Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
+                case R.id.action_add_event:
+                    Toast.makeText(context, "Add to favourite", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.action_play_next:
-                    Toast.makeText(mContext, "Play next", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Play next", Toast.LENGTH_SHORT).show();
                     return true;
                 default:
             }
             return false;
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return eventList.size();
     }
 }

@@ -37,6 +37,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ivent.com.ivent.MainActivity" />
         </activity>
+        <activity
+            android:name=".EventPicturesActivity"
+            android:label="@string/title_activity_event_pictures"></activity>
     </application>
 
 </manifest>
