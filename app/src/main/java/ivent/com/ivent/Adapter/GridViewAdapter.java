@@ -44,8 +44,8 @@ public class GridViewAdapter extends ArrayAdapter {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
-            holder.imageTitle = (TextView) row.findViewById(R.id.event_image_grid_image);
-            holder.image = (ImageView) row.findViewById(R.id.event_image_grid_text);
+            holder.imageTitle = row.findViewById(R.id.event_image_grid_text);
+            holder.image = row.findViewById(R.id.event_image_grid_image);
             row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();
@@ -58,7 +58,6 @@ public class GridViewAdapter extends ArrayAdapter {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http").encodedAuthority("10.0.2.2:8080")
                 .appendPath("picture")
-                .appendPath("event")
                 .appendPath(String.valueOf(image.getId()));
 
         Glide.with(context).load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString())).into(holder.image);

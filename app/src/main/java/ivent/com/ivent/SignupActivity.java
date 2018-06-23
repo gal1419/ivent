@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import ivent.com.ivent.model.User;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.RestClient;
@@ -22,13 +22,17 @@ import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
+    @BindView(R.id.input_name)
+    EditText _nameText;
+    @BindView(R.id.input_email)
+    EditText _emailText;
+    @BindView(R.id.input_password)
+    EditText _passwordText;
+    @BindView(R.id.btn_signup)
+    Button _signupButton;
+    @BindView(R.id.link_login)
+    TextView _loginLink;
     private ApiService apiService = RestClient.getApiService();
-
-    @BindView(R.id.input_name) EditText _nameText;
-    @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_password) EditText _passwordText;
-    @BindView(R.id.btn_signup) Button _signupButton;
-    @BindView(R.id.link_login) TextView _loginLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,14 +81,15 @@ public class SignupActivity extends AppCompatActivity {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-              Log.i(TAG, "success");
-              if (response.raw().code() == 200) {
-                  onSignupSuccess();
-              } else {
-                  onSignupFailed();
-              }
+                Log.i(TAG, "success");
+                if (response.raw().code() == 200) {
+                    onSignupSuccess();
+                } else {
+                    onSignupFailed();
+                }
                 progressDialog.dismiss();
             }
+
             @Override
             public void onFailure(Call<Void> call, Throwable throwable) {
                 Log.e(TAG, throwable.toString());

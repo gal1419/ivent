@@ -11,12 +11,12 @@ class AppContext extends Application {
 
     private static Context mContext;
 
+    public static Context getAppContext() {
+        return mContext;
+    }
+
     public void onCreate() {
         super.onCreate();
         mContext = this.getApplicationContext();
-    }
-
-    public static Context getAppContext(){
-        return mContext;
     }
 }

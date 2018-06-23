@@ -3,35 +3,26 @@ package ivent.com.ivent;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Activity;
 import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.UUID;
 
-import butterknife.BindView;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.RestClient;
+import ivent.com.ivent.service.Utils;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -42,8 +33,8 @@ import retrofit2.Response;
 
 public class AddNewEventActivity extends AppCompatActivity {
 
-    private int PICK_IMAGE_REQUEST = 1;
     private static final int STORAGE_PERMISSION_CODE = 123;
+    private int PICK_IMAGE_REQUEST = 1;
     private Bitmap bitmap;
     private Uri filePath;
 
@@ -90,9 +81,7 @@ public class AddNewEventActivity extends AppCompatActivity {
     }
 
     private void uploadImageToServer() throws Exception {
-        String uploadId = UUID.randomUUID().toString();
-
-        File file = new File(getPath(filePath));
+        File file = new File(Utils.getPathFromURI(getContentResolver(), filePath));
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
@@ -103,7 +92,7 @@ public class AddNewEventActivity extends AppCompatActivity {
         req.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.i(",","ss");
+                Log.i(",", "ss");
             }
 
             @Override
@@ -111,28 +100,6 @@ public class AddNewEventActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
-    }
-
-    public void onEventAdd(View view) {
-
-    }
-
-    //method to get the file path from uri
-    public String getPath(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
-        cursor.close();
-
-        cursor = getContentResolver().query(
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
-        cursor.moveToFirst();
-        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-        cursor.close();
-
-        return path;
     }
 
     private void requestStoragePermission() {

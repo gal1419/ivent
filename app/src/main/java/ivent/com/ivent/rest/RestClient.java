@@ -20,8 +20,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RestClient {
-    private static Context context;
     private static final String BASE_URL = "http://10.0.2.2:8080/";
+    private static Context context;
     private static ApiService apiService = null;
 
 

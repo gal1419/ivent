@@ -50,4 +50,7 @@ dependencies {
 
     // upload service
     implementation "net.gotev:uploadservice:3.4.2"
+
+    // image pick
+    implementation 'com.github.jrvansuita:PickImage:2.2.3'
 }

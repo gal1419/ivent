@@ -17,7 +17,7 @@ public class AuthenticationService {
 
     public static String getAuthToken(Context context) {
         if (!authToken.equals("")) {
-            return  authToken;
+            return authToken;
         }
         SharedPreferences sharedPreferences = context.getSharedPreferences("ivent.com.ivent", Context.MODE_PRIVATE);
         authToken = sharedPreferences.getString("login-token", "");

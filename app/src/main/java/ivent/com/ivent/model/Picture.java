@@ -1,25 +1,28 @@
 package ivent.com.ivent.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by galmalachi on 06/04/2018.
  */
 
-public class Picture implements Parcelable {
+public class Picture {
 
     @SerializedName("id")
     private Long Id;
-
 
     @SerializedName("owner")
     private User owner;
 
     @SerializedName("description")
     private String description;
+
+    @SerializedName("image")
+    private byte[] image;
+
+    public Picture() {
+
+    }
 
     public Long getId() {
         return Id;
@@ -45,39 +48,11 @@ public class Picture implements Parcelable {
         this.description = description;
     }
 
-    protected Picture(Parcel in) {
-        Id = in.readByte() == 0x00 ? null : in.readLong();
-        owner = (User) in.readValue(User.class.getClassLoader());
-        description = in.readString();
+    public byte[] getImage() {
+        return image;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        if (Id == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeLong(Id);
-        }
-        dest.writeValue(owner);
-        dest.writeString(description);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Picture> CREATOR = new Parcelable.Creator<Picture>() {
-        @Override
-        public Picture createFromParcel(Parcel in) {
-            return new Picture(in);
-        }
-
-        @Override
-        public Picture[] newArray(int size) {
-            return new Picture[size];
-        }
-    };
 }

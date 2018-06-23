@@ -29,4 +29,8 @@
     <string name="title_activity_add_new_event">AddNewEventActivity</string>
     <string name="title_activity_event_pictures">EventPicturesActivity</string>
 
+
+    <!-- Event Pictures Grid View -->
+    <string name="no_event_pictures">Looks like there are no pictures in this event. Be the first to add one!</string>
+
 </resources>

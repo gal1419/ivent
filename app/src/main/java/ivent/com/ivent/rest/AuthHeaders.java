@@ -11,7 +11,7 @@ import ivent.com.ivent.service.AuthenticationService;
 
 public class AuthHeaders {
 
-    public static GlideUrl getGlideUrlWithHeaders(String url){
+    public static GlideUrl getGlideUrlWithHeaders(String url) {
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", AuthenticationService.getAuthToken())
                 .build());

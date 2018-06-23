@@ -15,7 +15,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 /**
  * Created by galmalachi on 10/02/2018.
@@ -35,6 +34,10 @@ public interface ApiService {
 
     @GET("picture/event/{eventId}")
     Call<List<Picture>> getEventPictures(@Path("eventId") String eventId);
+
+    @Multipart
+    @POST("picture/add")
+    Call<ResponseBody> addPicture(@Part MultipartBody.Part image, @Part("eventId") RequestBody eventId, @Part("description") RequestBody description);
 
     @Multipart
     @POST("upload-file/add")

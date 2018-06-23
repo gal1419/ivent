@@ -14,26 +14,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ivent.com.ivent.EventPicturesActivity;
 import ivent.com.ivent.R;
 import ivent.com.ivent.model.Event;
-import ivent.com.ivent.model.Picture;
-import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.AuthHeaders;
-import ivent.com.ivent.rest.RestClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder> {
@@ -97,10 +89,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         private ImageView thumbnail;
         private ImageView overflow;
 
-        private GridView gridView;
-        private GridViewAdapter gridAdapter;
-        private ApiService apiService = RestClient.getApiService();
-
 
         public MyViewHolder(View view) {
             super(view);
@@ -110,23 +98,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             thumbnail = view.findViewById(R.id.thumbnail);
             overflow = view.findViewById(R.id.overflow);
 
-            view.setOnClickListener(v ->  {
-
-                Call<List<Picture>> call = apiService.getEventPictures(String.valueOf(eventId));
-                call.enqueue(new Callback<List<Picture>>() {
-                    @Override
-                    public void onResponse(Call<List<Picture>> call, Response<List<Picture>> response) {
-                        Intent intent = new Intent(context, EventPicturesActivity.class);
-                        ArrayList<Picture> list = new ArrayList<>();
-                        list.addAll(response.body());
-                        intent.putParcelableArrayListExtra("PictureList", list);
-                        context.startActivity(intent);
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Picture>> call, Throwable throwable) {
-                    }
-                });
+            view.setOnClickListener(v -> {
+                Intent intent = new Intent(context, EventPicturesActivity.class);
+                intent.putExtra("eventId", eventId);
+                context.startActivity(intent);
             });
         }
     }

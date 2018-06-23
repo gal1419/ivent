@@ -15,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -156,8 +155,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume()
-    {  // After a pause OR at startup
+    public void onResume() {  // After a pause OR at startup
         super.onResume();
         //Refresh your stuff here
         prepareEvents();
