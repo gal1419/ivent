@@ -39,8 +39,8 @@
                 android:value="ivent.com.ivent.MainActivity" />
         </activity>
         <activity
-            android:name=".EventPicturesActivity"
-            android:label="@string/title_activity_event_pictures"></activity>
+            android:name=".GalleryActivity"
+            android:label="@string/title_activity_event_pictures" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -52,6 +52,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/picker_provider_paths" />
         </provider>
+
+        <activity android:name=".ImageDetailsActivity"></activity>
     </application>
 
 </manifest>

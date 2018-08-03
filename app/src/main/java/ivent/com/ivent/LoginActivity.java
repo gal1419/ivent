@@ -17,6 +17,7 @@ import ivent.com.ivent.model.User;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.RestClient;
 import ivent.com.ivent.service.AuthenticationService;
+import ivent.com.ivent.service.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login() {
         Log.d(TAG, "Login");
+        Utils.hideKeyboard(this);
 
         if (!validate()) {
             onLoginFailed();

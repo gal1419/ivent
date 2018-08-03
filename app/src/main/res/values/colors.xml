@@ -2,7 +2,7 @@
 <resources>
 
     <color name="primary">#E43F3F</color>
-    <color name="primary_dark">#E12929</color>
+    <color name="primary_dark">#e12929</color>
     <color name="primary_darker">#CC1D1D</color>
     <color name="accent">#FFFFFF</color>
 
@@ -15,11 +15,8 @@
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
     <color name="white">#FFFFFF</color>
-    <color name="blue">#00ABEA</color>
+    <color name="blue">#00abea</color>
 
-    <color name="colorPrimary">#F50057</color>
-    <color name="colorPrimaryDark">#F50057</color>
-    <color name="colorAccent">#FF4081</color>
     <color name="viewBg">#f1f5f8</color>
     <color name="event_title">#4c4c4c</color>
 </resources>

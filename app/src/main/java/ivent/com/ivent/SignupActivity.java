@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import ivent.com.ivent.model.User;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.RestClient;
+import ivent.com.ivent.service.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,6 +59,8 @@ public class SignupActivity extends AppCompatActivity {
 
     public void signup() {
         Log.d(TAG, "Signup");
+        Utils.hideKeyboard(this);
+
 
         if (!validate()) {
             onSignupFailed();

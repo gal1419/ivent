@@ -19,10 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
-import ivent.com.ivent.EventPicturesActivity;
+import ivent.com.ivent.GalleryActivity;
 import ivent.com.ivent.R;
 import ivent.com.ivent.model.Event;
 import ivent.com.ivent.rest.AuthHeaders;
@@ -60,7 +61,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                 .appendPath("thumbnail")
                 .appendPath(String.valueOf(event.getId()));
 
-        Glide.with(context).load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString())).into(holder.thumbnail);
+        Glide.with(context)
+                .load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString()))
+                .thumbnail(0.5f)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.thumbnail);
         holder.overflow.setOnClickListener(view -> showPopupMenu(holder.overflow));
     }
 
@@ -99,7 +105,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             overflow = view.findViewById(R.id.overflow);
 
             view.setOnClickListener(v -> {
-                Intent intent = new Intent(context, EventPicturesActivity.class);
+                Intent intent = new Intent(context, GalleryActivity.class);
                 intent.putExtra("eventId", eventId);
                 context.startActivity(intent);
             });

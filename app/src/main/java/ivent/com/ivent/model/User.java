@@ -2,11 +2,13 @@ package ivent.com.ivent.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by galmalachi on 10/02/2018.
  */
 
-public class User {
+public class User implements Serializable {
 
     @SerializedName("firstName")
     private String firstName;

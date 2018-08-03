@@ -54,6 +54,15 @@ public class AddNewEventActivity extends AppCompatActivity {
         eventImageView = findViewById(R.id.eventImageView);
     }
 
+    public void onEventAdd(View view) {
+        try {
+            uploadImageToServer();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void onImageUpload(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -71,7 +80,6 @@ public class AddNewEventActivity extends AppCompatActivity {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 this.eventImageView.setImageBitmap(bitmap);
-                uploadImageToServer();
 
             } catch (Exception e) {
                 e.printStackTrace();

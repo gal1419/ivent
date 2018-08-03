@@ -1,11 +1,13 @@
 package ivent.com.ivent;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import ivent.com.ivent.Adapter.GridViewAdapter;
+import ivent.com.ivent.Adapter.GalleryAdapter;
 import ivent.com.ivent.model.Picture;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.RestClient;
@@ -30,25 +32,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventPicturesActivity extends FragmentActivity implements IPickResult {
+public class GalleryActivity extends AppCompatActivity implements IPickResult {
 
-    private GridView picturesGrid;
-    private GridViewAdapter gridAdapter;
-    private TextView noPicturesTextView;
-    private ApiService apiService = RestClient.getApiService();
-    private List<Picture> eventPictures = new ArrayList<>();
-    private String eventId;
+    RecyclerView mRecyclerView;
+    GalleryAdapter galleryAdapter;
+    TextView noPicturesTextView;
+    ApiService apiService = RestClient.getApiService();
+    ArrayList<Picture> eventPictures = new ArrayList<>();
+    String eventId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_pictures);
-
         eventId = String.valueOf(getIntent().getExtras().get("eventId"));
+        Context context = this;
 
         Call<List<Picture>> call = apiService.getEventPictures(eventId);
-        Context context = this;
         call.enqueue(new Callback<List<Picture>>() {
             @Override
             public void onResponse(Call<List<Picture>> call, Response<List<Picture>> response) {
@@ -58,10 +59,25 @@ public class EventPicturesActivity extends FragmentActivity implements IPickResu
                     noPicturesTextView = findViewById(R.id.noEventPictures);
                     noPicturesTextView.setVisibility(View.VISIBLE);
                 } else {
-                    picturesGrid = findViewById(R.id.picturesGrid);
-                    gridAdapter = new GridViewAdapter(context, R.layout.event_picture_item_layout, eventPictures);
-                    picturesGrid.setAdapter(gridAdapter);
-                    picturesGrid.setVisibility(View.VISIBLE);
+
+                    setSupportActionBar(findViewById(R.id.toolbar));
+                    mRecyclerView = (RecyclerView) findViewById(R.id.event_gallery);
+                    mRecyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+                    mRecyclerView.setHasFixedSize(true);
+
+
+                    galleryAdapter = new GalleryAdapter(GalleryActivity.this, eventPictures);
+                    mRecyclerView.setAdapter(galleryAdapter);
+
+                    mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(context,
+                            (view, position) -> {
+                                Intent intent = new Intent(context, ImageDetailsActivity.class);
+                                intent.putParcelableArrayListExtra("data", eventPictures);
+                                intent.putExtra("pos", position);
+                                startActivity(intent);
+                            }));
+
+                    mRecyclerView.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -74,7 +90,6 @@ public class EventPicturesActivity extends FragmentActivity implements IPickResu
 
     public void onAddPictureClicked(View view) {
         PickSetup setup = new PickSetup();
-
         PickImageDialog.build(setup)
                 //.setOnClick(this)
                 .show(this);
@@ -114,10 +129,6 @@ public class EventPicturesActivity extends FragmentActivity implements IPickResu
     }
 
     protected void customize(PickSetup setup) {
-
-        //setup.setWidth(800).setHeight(700);
-        //setup.setVideo(true);
-
         setup.setGalleryIcon(R.mipmap.gallery_colored);
         setup.setCameraIcon(R.mipmap.camera_colored);
     }
