@@ -53,7 +53,8 @@
                 android:resource="@xml/picker_provider_paths" />
         </provider>
 
-        <activity android:name=".ImageDetailsActivity"></activity>
+        <activity android:name=".ImageDetailsActivity" />
+        <activity android:name=".NewGalleryImageActivity"></activity>
     </application>
 
 </manifest>

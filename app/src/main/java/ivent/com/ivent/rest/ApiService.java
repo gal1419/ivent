@@ -37,7 +37,7 @@ public interface ApiService {
 
     @Multipart
     @POST("picture/add")
-    Call<ResponseBody> addPicture(@Part MultipartBody.Part image, @Part("eventId") RequestBody eventId, @Part("description") RequestBody description);
+    Call<Picture> addPicture(@Part MultipartBody.Part image, @Part("eventId") RequestBody eventId, @Part("description") RequestBody description);
 
     @Multipart
     @POST("upload-file/add")
