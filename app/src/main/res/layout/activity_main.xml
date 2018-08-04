@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -76,7 +77,7 @@
 
     <include layout="@layout/content_main" />
 
-    <android.support.design.widget.FloatingActionButton
+<!--    <android.support.design.widget.FloatingActionButton
         android:id="@+id/addEventButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,6 +92,43 @@
         android:tint="@color/primary_dark"
         app:backgroundTint="@color/aluminum"
         app:rippleColor="@color/primary_dark"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add" />-->
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/multiple_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="30dp"
+        app:fab_addButtonColorNormal="@color/blue"
+        app:fab_addButtonColorPressed="@color/blue_semi_transparent_pressed"
+        app:fab_addButtonPlusIconColor="@color/white_pressed"
+        android:layout_marginEnd="16dp">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/create_new_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onAddEventClicked"
+            app:fab_icon="@drawable/ic_new_event"
+            app:fab_colorNormal="@color/blue"
+            app:fab_title="Create New Event"
+            app:fab_colorPressed="@color/blue_semi_transparent_pressed"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/scan_barcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onScanQRClicked"
+            app:fab_colorNormal="@color/blue"
+            app:fab_icon="@drawable/ic_qr"
+            app:fab_title="Scan Barcode"
+            app:fab_colorPressed="@color/blue_semi_transparent_pressed"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </android.support.design.widget.CoordinatorLayout>
