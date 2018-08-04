@@ -2,7 +2,9 @@ package ivent.com.ivent.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,8 @@ import ivent.com.ivent.rest.AuthHeaders;
 public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private List<Picture> imageList = new ArrayList<>();
+    private List<Long> selectedIds = new ArrayList<>();
+
 
     public GalleryAdapter(Context context, List<Picture> imageList) {
         this.context = context;
@@ -36,19 +40,23 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder viewHolder;
-        View v;
-        v = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.gallery_item, parent, false);
-        viewHolder = new MyItemHolder(v);
-        return viewHolder;
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.gallery_item, parent, false);
+        return new MyItemHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
         Picture image = imageList.get(position);
-        //holder.imageTitle.setText(image.getDescription());
+
+        if (selectedIds.contains(image.getId())){
+            //if item is selected then,set foreground color of FrameLayout.
+            ((MyItemHolder) holder).mImg.setForeground(new ColorDrawable(ContextCompat.getColor(context, R.color.selectedImageColor)));
+        }
+        else {
+            //else remove selected item color.
+            ((MyItemHolder) holder).mImg.setForeground(new ColorDrawable(ContextCompat.getColor(context,android.R.color.transparent)));
+        }
 
         // loading image using Glide library
         Uri.Builder builder = new Uri.Builder();
@@ -70,12 +78,20 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return imageList.size();
     }
 
+    public Picture getItem(int position){
+        return imageList.get(position);
+    }
+
+    public void setSelectedIds(List<Long> selectedIds) {
+        this.selectedIds = selectedIds;
+        notifyDataSetChanged();
+    }
+
     public static class MyItemHolder extends RecyclerView.ViewHolder {
         ImageView mImg;
 
         public MyItemHolder(View itemView) {
             super(itemView);
-
             mImg = (ImageView) itemView.findViewById(R.id.event_image_grid_image);
         }
 
