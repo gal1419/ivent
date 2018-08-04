@@ -35,6 +35,9 @@ public interface ApiService {
     @GET("picture/event/{eventId}")
     Call<List<Picture>> getEventPictures(@Path("eventId") String eventId);
 
+    @GET("event/{eventId}")
+    Call<Event> getEventById(@Path("eventId") String eventId);
+
     @Multipart
     @POST("picture/add")
     Call<Picture> addPicture(@Part MultipartBody.Part image, @Part("eventId") RequestBody eventId, @Part("description") RequestBody description);

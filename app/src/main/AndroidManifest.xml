@@ -56,7 +56,8 @@
         </provider>
 
         <activity android:name=".ImageDetailsActivity" />
-        <activity android:name=".NewGalleryImageActivity"></activity>
+        <activity android:name=".NewGalleryImageActivity" />
+        <activity android:name=".ScanQRActivity"/>
     </application>
 
 </manifest>

@@ -82,9 +82,9 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
     }
 
     public void onAddPictureClicked(View view) {
-        PickSetup setup = new PickSetup();
-        setup.setGalleryIcon(R.mipmap.gallery_colored);
-        setup.setCameraIcon(R.mipmap.camera_colored);
+        PickSetup setup = new PickSetup()
+                .setGalleryIcon(R.mipmap.gallery_colored)
+                .setCameraIcon(R.mipmap.camera_colored);
         PickImageDialog.build(setup)
                 .show(this);
     }
