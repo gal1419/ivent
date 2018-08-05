@@ -1,17 +1,11 @@
-package ivent.com.ivent;
+package ivent.com.ivent.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,23 +13,19 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
 
-import java.io.File;
+import net.glxn.qrgen.android.QRCode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ivent.com.ivent.Adapter.EventAdapter;
+import ivent.com.ivent.R;
 import ivent.com.ivent.model.Event;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.RestClient;
@@ -174,9 +164,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {  // After a pause OR at startup
+    public void onResume() {
         super.onResume();
-        //Refresh your stuff here
         prepareEvents();
     }
 

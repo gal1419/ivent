@@ -6,7 +6,7 @@ import android.content.Intent;
 import java.util.concurrent.TimeUnit;
 
 import ivent.com.ivent.BuildConfig;
-import ivent.com.ivent.LoginActivity;
+import ivent.com.ivent.activity.LoginActivity;
 import ivent.com.ivent.service.AuthenticationService;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;

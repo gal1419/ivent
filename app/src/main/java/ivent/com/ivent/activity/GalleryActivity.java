@@ -1,4 +1,4 @@
-package ivent.com.ivent;
+package ivent.com.ivent.activity;
 
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ivent.com.ivent.Adapter.GalleryAdapter;
+import ivent.com.ivent.R;
+import ivent.com.ivent.RecyclerItemClickListener;
 import ivent.com.ivent.model.Picture;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.RestClient;

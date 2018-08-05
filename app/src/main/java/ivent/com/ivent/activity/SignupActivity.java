@@ -1,4 +1,4 @@
-package ivent.com.ivent;
+package ivent.com.ivent.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ivent.com.ivent.R;
 import ivent.com.ivent.model.User;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.RestClient;

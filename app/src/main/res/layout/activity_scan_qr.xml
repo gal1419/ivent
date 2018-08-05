@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/accent"
     android:paddingLeft="5dp"
-    tools:context="ivent.com.ivent.ScanQRActivity">
+    tools:context="ivent.com.ivent.activity.ScanQRActivity">
 
     <TextView
         android:id="@+id/scan_event_name"

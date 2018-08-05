@@ -6,4 +6,4 @@
     android:layout_height="wrap_content"
     android:adjustViewBounds="true"
     android:scaleType="fitCenter"
-    tools:context="ivent.com.ivent.ImageDetailsActivity$PlaceholderFragment" />
+    tools:context="ivent.com.ivent.activity.ImageDetailsActivity$PlaceholderFragment" />

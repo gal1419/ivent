@@ -23,7 +23,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
-import ivent.com.ivent.GalleryActivity;
+import ivent.com.ivent.activity.EventDetailsActivity;
+import ivent.com.ivent.activity.GalleryActivity;
 import ivent.com.ivent.R;
 import ivent.com.ivent.model.Event;
 import ivent.com.ivent.rest.AuthHeaders;
@@ -67,18 +68,33 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.thumbnail);
-        holder.overflow.setOnClickListener(view -> showPopupMenu(holder.overflow));
+        holder.overflow.setOnClickListener(view -> showPopupMenu(holder.overflow, position));
     }
 
-    /**
-     * Showing popup menu when tapping on 3 dots
-     */
-    private void showPopupMenu(View view) {
+
+    private void showPopupMenu(View view, int position) {
         // inflate menu
         PopupMenu popup = new PopupMenu(context, view);
+
+        popup.setOnMenuItemClickListener(menuItem -> {
+
+            switch (menuItem.getItemId()) {
+                case R.id.action_add_event:
+                    Toast.makeText(context, "Add to favourite", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.action_view_event_details:
+                    Intent intent = new Intent(context, EventDetailsActivity.class);
+                    intent.putExtra("event", eventList.get(position));
+                    context.startActivity(intent);
+                    return true;
+                default:
+            }
+            return false;
+
+        });
+
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.manu_event, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
         popup.show();
     }
 
@@ -109,29 +125,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                 intent.putExtra("eventId", eventId);
                 context.startActivity(intent);
             });
-        }
-    }
-
-    /**
-     * Click listener for popup menu items
-     */
-    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
-
-        public MyMenuItemClickListener() {
-        }
-
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-                case R.id.action_add_event:
-                    Toast.makeText(context, "Add to favourite", Toast.LENGTH_SHORT).show();
-                    return true;
-                case R.id.action_play_next:
-                    Toast.makeText(context, "Play next", Toast.LENGTH_SHORT).show();
-                    return true;
-                default:
-            }
-            return false;
         }
     }
 }

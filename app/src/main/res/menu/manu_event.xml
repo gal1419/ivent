@@ -8,7 +8,7 @@
         android:title="@string/action_add_event" />
 
     <item
-        android:id="@+id/action_play_next"
+        android:id="@+id/action_view_event_details"
         android:orderInCategory="101"
-        android:title="@string/action_play_next" />
+        android:title="@string/action_view_event_details" />
 </menu>

@@ -1,4 +1,4 @@
-package ivent.com.ivent;
+package ivent.com.ivent.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +21,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 
 import ivent.com.ivent.Adapter.GalleryAdapter;
+import ivent.com.ivent.DepthPageTransformer;
+import ivent.com.ivent.R;
 import ivent.com.ivent.model.Picture;
 import ivent.com.ivent.rest.AuthHeaders;
 

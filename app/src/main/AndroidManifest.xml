@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,22 +26,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".activity.SignupActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".AddNewEventActivity"
+            android:name=".activity.AddNewEventActivity"
             android:label="@string/title_activity_add_new_event"
             android:theme="@style/AppTheme.Dark">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ivent.com.ivent.MainActivity" />
+                android:value="ivent.com.ivent.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".GalleryActivity"
+            android:name=".activity.GalleryActivity"
             android:label="@string/title_activity_event_pictures" />
 
         <provider
@@ -55,9 +55,10 @@
                 android:resource="@xml/picker_provider_paths" />
         </provider>
 
-        <activity android:name=".ImageDetailsActivity" />
-        <activity android:name=".NewGalleryImageActivity" />
-        <activity android:name=".ScanQRActivity"/>
+        <activity android:name=".activity.ImageDetailsActivity" />
+        <activity android:name=".activity.NewGalleryImageActivity" />
+        <activity android:name=".activity.ScanQRActivity" />
+        <activity android:name=".activity.EventDetailsActivity"></activity>
     </application>
 
 </manifest>

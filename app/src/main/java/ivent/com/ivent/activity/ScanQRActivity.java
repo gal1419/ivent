@@ -1,15 +1,6 @@
-package ivent.com.ivent;
+package ivent.com.ivent.activity;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -27,15 +18,10 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
-import com.vansuita.pickimage.enums.EPickType;
 import com.vansuita.pickimage.listeners.IPickResult;
 
-import java.io.File;
-import java.net.URI;
-import java.util.List;
-
+import ivent.com.ivent.R;
 import ivent.com.ivent.model.Event;
-import ivent.com.ivent.model.Picture;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.AuthHeaders;
 import ivent.com.ivent.rest.RestClient;

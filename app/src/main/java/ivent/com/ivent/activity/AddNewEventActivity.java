@@ -1,4 +1,4 @@
-package ivent.com.ivent;
+package ivent.com.ivent.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.UUID;
 
+import ivent.com.ivent.R;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.RestClient;
 import ivent.com.ivent.service.Utils;

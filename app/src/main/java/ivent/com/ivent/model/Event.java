@@ -1,14 +1,18 @@
 package ivent.com.ivent.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by galmalachi on 10/02/2018.
  */
 
-public class Event {
+public class Event implements Parcelable {
 
     @SerializedName("id")
     private Long id;
@@ -88,5 +92,56 @@ public class Event {
     public void setImage(String image) {
         this.image = image;
     }
-}
 
+    protected Event(Parcel in) {
+        id = in.readByte() == 0x00 ? null : in.readLong();
+        title = in.readString();
+        address = in.readString();
+        owner = (User) in.readValue(User.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            participants = new ArrayList<User>();
+            in.readList(participants, User.class.getClassLoader());
+        } else {
+            participants = null;
+        }
+        image = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(id);
+        }
+        dest.writeString(title);
+        dest.writeString(address);
+        dest.writeValue(owner);
+        if (participants == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(participants);
+        }
+        dest.writeString(image);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
+}
