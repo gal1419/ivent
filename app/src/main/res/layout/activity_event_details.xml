@@ -2,20 +2,24 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="40dp"
     android:paddingLeft="24dp"
-    android:paddingRight="24dp">
+    android:paddingRight="24dp"
+    android:background="@color/accent">
 
     <TextView
         android:id="@+id/event_details_title"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:textAlignment="center"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center"
+        android:includeFontPadding="false"
         android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:textSize="34sp"/>
 
     <Switch
         android:id="@+id/event_details_image_switch"
@@ -33,27 +37,47 @@
         android:id="@+id/event_details_owner"
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:drawableLeft="@drawable/ic_key"
-        android:drawablePadding="8dp"/>
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:textColor="@color/black"
+        android:textSize="24sp"/>
 
     <TextView
         android:id="@+id/event_details_participants"
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:fontFamily="sans-serif-smallcaps"
+        android:includeFontPadding="false"
+        android:textColor="@color/black"
         android:drawableLeft="@drawable/ic_participants"
-        android:drawablePadding="8dp"/>
+        android:drawablePadding="8dp"
+        android:textSize="24sp"/>
 
     <TextView
         android:id="@+id/event_details_address"
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:fontFamily="sans-serif-smallcaps"
+        android:includeFontPadding="false"
+        android:textColor="@color/black"
         android:drawableLeft="@drawable/ic_address"
-        android:drawablePadding="8dp"/>
+        android:drawablePadding="8dp"
+        android:textSize="24sp"/>
 
     <TextView
         android:id="@+id/event_details_photos_number"
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:fontFamily="sans-serif-smallcaps"
+        android:includeFontPadding="false"
+        android:textColor="@color/black"
         android:drawableLeft="@drawable/ic_picture"
-        android:drawablePadding="8dp"/>
+        android:drawablePadding="8dp"
+        android:textSize="24sp"/>
 </LinearLayout>

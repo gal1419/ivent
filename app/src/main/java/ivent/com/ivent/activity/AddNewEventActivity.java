@@ -17,6 +17,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.listeners.IPickResult;
+
 import java.io.File;
 import java.util.UUID;
 
@@ -32,13 +37,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddNewEventActivity extends AppCompatActivity {
+public class AddNewEventActivity extends AppCompatActivity implements IPickResult {
 
-    private static final int STORAGE_PERMISSION_CODE = 123;
-    private int PICK_IMAGE_REQUEST = 1;
-    private Bitmap bitmap;
     private Uri filePath;
-
     private EditText eventAddress;
     private EditText eventName;
     private ImageView eventImageView;
@@ -53,6 +54,16 @@ public class AddNewEventActivity extends AppCompatActivity {
         eventAddress = findViewById(R.id.eventAddress);
         eventName = findViewById(R.id.eventName);
         eventImageView = findViewById(R.id.eventImageView);
+        eventImageView.setImageResource(R.drawable.image_placeholder);
+
+        eventImageView.setOnClickListener(v -> {
+            PickSetup setup = new PickSetup()
+                    .setGalleryIcon(R.mipmap.gallery_colored)
+                    .setCameraIcon(R.mipmap.camera_colored);
+            PickImageDialog
+                    .build(setup)
+                    .show(this);
+        });
     }
 
     public void onEventAdd(View view) {
@@ -64,30 +75,6 @@ public class AddNewEventActivity extends AppCompatActivity {
         }
     }
 
-    public void onImageUpload(View view) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-    //handling the image chooser activity result
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filePath = data.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                this.eventImageView.setImageBitmap(bitmap);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
     private void uploadImageToServer() throws Exception {
         File file = new File(Utils.getPathFromURI(getContentResolver(), filePath));
@@ -101,42 +88,23 @@ public class AddNewEventActivity extends AppCompatActivity {
         req.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.i(",", "ss");
+                Log.i("AddNewEventActivity", "Picture was uploaded");
+                finish();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
+                finish();
             }
         });
     }
 
-    private void requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            return;
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-        }
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-    }
-
-
-    //This method will be called when the user will tap on allow or deny
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        //Checking the request code of our request
-        if (requestCode == STORAGE_PERMISSION_CODE) {
-
-            //If permission is granted
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //Displaying a toast
-                Toast.makeText(this, "Permission granted now you can read the storage", Toast.LENGTH_LONG).show();
-            } else {
-                //Displaying another toast if permission is not granted
-                Toast.makeText(this, "Oops you just denied the permission", Toast.LENGTH_LONG).show();
-            }
+    public void onPickResult(PickResult pickResult) {
+        if (pickResult.getError() == null) {
+            eventImageView.setImageBitmap(pickResult.getBitmap());
+            filePath = pickResult.getUri();
         }
     }
 

@@ -96,7 +96,6 @@ public class ScanQRActivity extends AppCompatActivity implements IPickResult {
                                 .load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString()))
                                 .thumbnail(0.5f)
                                 .crossFade()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(imageView);
 
                         eventNameTextView.setText(event.getTitle());

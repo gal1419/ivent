@@ -66,7 +66,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                 .load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString()))
                 .thumbnail(0.5f)
                 .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.thumbnail);
         holder.overflow.setOnClickListener(view -> showPopupMenu(holder.overflow, position));
     }

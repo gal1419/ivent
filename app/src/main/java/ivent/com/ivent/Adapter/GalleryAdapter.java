@@ -68,7 +68,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 .load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString()))
                 .thumbnail(0.5f)
                 .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(((MyItemHolder) holder).mImg);
 
     }

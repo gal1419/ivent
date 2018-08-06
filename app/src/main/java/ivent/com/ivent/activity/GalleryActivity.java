@@ -217,6 +217,7 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
                     request.setTitle("Picture " + id + ".png");
                     request.setDescription("Picture " + id + ".png");
                     request.addRequestHeader("Authorization", AuthenticationService.getAuthToken());
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
                     request.setVisibleInDownloadsUi(true);
                     request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/Ivent/" + "/" + "Picture " + id + ".png");
                     list.add(downloadManager.enqueue(request));

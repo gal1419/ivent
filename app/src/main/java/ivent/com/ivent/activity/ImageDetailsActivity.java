@@ -192,7 +192,6 @@ public class ImageDetailsActivity extends AppCompatActivity {
             Glide.with(getActivity())
                     .load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString()))
                     .thumbnail(0.1f)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageView);
 
             return rootView;
