@@ -11,7 +11,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,13 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
 import ivent.com.ivent.activity.EventDetailsActivity;
 import ivent.com.ivent.activity.GalleryActivity;
 import ivent.com.ivent.R;
+import ivent.com.ivent.activity.NewGalleryImageActivity;
 import ivent.com.ivent.model.Event;
 import ivent.com.ivent.rest.AuthHeaders;
 
@@ -72,17 +71,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
 
     private void showPopupMenu(View view, int position) {
-        // inflate menu
         PopupMenu popup = new PopupMenu(context, view);
-
         popup.setOnMenuItemClickListener(menuItem -> {
+            Intent intent;
 
             switch (menuItem.getItemId()) {
-                case R.id.action_add_event:
-                    Toast.makeText(context, "Add to favourite", Toast.LENGTH_SHORT).show();
+                case R.id.action_quick_upload:
+                    intent = new Intent(context, GalleryActivity.class);
+                    intent.putExtra("shouldOpenPicker", true);
+                    intent.putExtra("eventId", eventList.get(position).getId());
+                    context.startActivity(intent);
                     return true;
                 case R.id.action_view_event_details:
-                    Intent intent = new Intent(context, EventDetailsActivity.class);
+                    intent = new Intent(context, EventDetailsActivity.class);
                     intent.putExtra("event", eventList.get(position));
                     context.startActivity(intent);
                     return true;
@@ -122,6 +123,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             view.setOnClickListener(v -> {
                 Intent intent = new Intent(context, GalleryActivity.class);
                 intent.putExtra("eventId", eventId);
+                intent.putExtra("shouldOpenPicker", false);
                 context.startActivity(intent);
             });
         }

@@ -59,6 +59,7 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
         setContentView(R.layout.activity_event_pictures);
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         eventId = String.valueOf(getIntent().getExtras().get("eventId"));
+        boolean shouldOpenPicker = (boolean) getIntent().getExtras().get("shouldOpenPicker");
 
         Toolbar toolbar = findViewById(R.id.gallery_toolbar);
         setSupportActionBar(toolbar);
@@ -81,9 +82,17 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
                 Toast.makeText(GalleryActivity.this, "Cannot load photos, try again later", Toast.LENGTH_SHORT).show();
             }
         });
+
+        if (shouldOpenPicker) {
+           openPicker();
+        }
     }
 
     public void onAddPictureClicked(View view) {
+        openPicker();
+    }
+
+    private void openPicker() {
         PickSetup setup = new PickSetup()
                 .setGalleryIcon(R.mipmap.gallery_colored)
                 .setCameraIcon(R.mipmap.camera_colored);
