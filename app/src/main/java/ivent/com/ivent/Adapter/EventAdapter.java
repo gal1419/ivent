@@ -85,6 +85,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                 case R.id.action_view_event_details:
                     intent = new Intent(context, EventDetailsActivity.class);
                     intent.putExtra("event", eventList.get(position));
+                    intent.putExtra("enableCheckIn", true);
                     context.startActivity(intent);
                     return true;
                 default:

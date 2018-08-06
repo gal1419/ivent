@@ -37,5 +37,6 @@
     <string name="add">Add</string>
     <string name="qr_code">QR Code</string>
     <string name="event_cover">Event Cover</string>
+    <string name="event_details_check_in">Check In</string>
 
 </resources>
