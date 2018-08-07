@@ -34,31 +34,38 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".activity.AddNewEventActivity"
-            android:label="@string/title_activity_add_new_event"
             android:theme="@style/AppTheme.Dark">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ivent.com.ivent.activity.MainActivity" />
+                android:value="ivent.com.ivent.activity.MainActivity"
+                android:theme="@style/AppTheme.Dark"/>
         </activity>
         <activity
             android:name=".activity.GalleryActivity"
-            android:label="@string/title_activity_event_pictures" />
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".activity.ImageDetailsActivity" />
+        <activity
+            android:name=".activity.NewGalleryImageActivity"
+            android:theme="@style/AppTheme.Dark"/>
+        <activity
+            android:name=".activity.ScanQRActivity"
+            android:theme="@style/AppTheme.Dark"/>
+        <activity
+            android:name=".activity.EventDetailsActivity"
+            android:theme="@style/AppTheme.Dark"/>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.com.vansuita.pickimage.provider"
-            android:exported="false"
-            android:grantUriPermissions="true"
-            tools:replace="android:authorities">
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="${applicationId}.com.vansuita.pickimage.provider"
+        android:exported="false"
+        android:grantUriPermissions="true"
+        tools:replace="android:authorities">
             <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/picker_provider_paths" />
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/picker_provider_paths" />
         </provider>
 
-        <activity android:name=".activity.ImageDetailsActivity" />
-        <activity android:name=".activity.NewGalleryImageActivity" />
-        <activity android:name=".activity.ScanQRActivity" />
-        <activity android:name=".activity.EventDetailsActivity"></activity>
     </application>
 
 </manifest>

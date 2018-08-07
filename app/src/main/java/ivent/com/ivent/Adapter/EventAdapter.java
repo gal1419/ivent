@@ -54,7 +54,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         holder.title.setText(event.getTitle());
         holder.count.setText(String.format("%d participants", event.getParticipants().size()));
 
-        // loading event cover using Glide library
+        // loading event main_cover using Glide library
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http").encodedAuthority("10.0.2.2:8080")
                 .appendPath("event")

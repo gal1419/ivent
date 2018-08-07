@@ -5,6 +5,7 @@
     <color name="primary_dark">#e12929</color>
     <color name="primary_darker">#CC1D1D</color>
     <color name="accent">#FFFFFF</color>
+    <color name="main_grey">#b7b7b7</color>
 
     <color name="black">#000000</color>
     <color name="jet">#222222</color>

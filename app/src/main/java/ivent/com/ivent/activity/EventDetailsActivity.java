@@ -1,8 +1,6 @@
 package ivent.com.ivent.activity;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,9 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import net.glxn.qrgen.android.QRCode;
@@ -61,7 +57,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         eventTitle.setText(event.getTitle());
         eventAddress.setText(event.getAddress());
-        eventOwner.setText(event.getOwner().getFirstName());
+        eventOwner.setText(event.getOwner().getFullName());
         eventPictureNumber.setText("11");
         eventParticipants.setText(String.valueOf(event.getParticipants().size()));
 
@@ -94,7 +90,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         eventQRCode = QRCode.from(event.getId().toString()).bitmap();
 
 
-        // loading event cover using Glide library
+        // loading event main_cover using Glide library
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http").encodedAuthority("10.0.2.2:8080")
                 .appendPath("event")

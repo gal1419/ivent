@@ -80,7 +80,7 @@ public class SignupActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        Call<Void> call = apiService.signUp(new User(name, name, email, password));
+        Call<Void> call = apiService.signUp(new User(name, email, password));
 
         call.enqueue(new Callback<Void>() {
             @Override

@@ -68,12 +68,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         prepareEvents();
-
-        try {
-            Glide.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.backdrop));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void onAddEventClicked(View view) {

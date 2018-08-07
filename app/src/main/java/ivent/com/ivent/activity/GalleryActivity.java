@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +44,8 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
 
     RecyclerView mRecyclerView;
     GalleryAdapter galleryAdapter;
-    TextView noPicturesTextView;
+    ImageView noPicturesBox;
+    ImageView noPicturesText;
     ApiService apiService = RestClient.getApiService();
     DownloadManager downloadManager;
     ArrayList<Picture> eventPictures = new ArrayList<>();
@@ -165,8 +168,10 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
     }
 
     private void displayNoImagesMessage() {
-        noPicturesTextView = findViewById(R.id.noEventPictures);
-        noPicturesTextView.setVisibility(View.VISIBLE);
+        noPicturesBox = findViewById(R.id.noEventPictures);
+        noPicturesText = findViewById(R.id.noEventPicturesText);
+        noPicturesBox.setVisibility(View.VISIBLE);
+        noPicturesText.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -192,7 +197,8 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
 
             if (eventPictures.size() == 1) {
                 displayImagesGrid();
-                noPicturesTextView.setVisibility(View.GONE);
+                noPicturesText.setVisibility(View.GONE);
+                noPicturesBox.setVisibility(View.GONE);
                 return;
             }
 

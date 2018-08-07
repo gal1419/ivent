@@ -42,22 +42,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
-
-        signupLink.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // Start the Signup activity
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
-            }
+        loginButton.setOnClickListener(v -> login());
+        signupLink.setOnClickListener(v -> {
+            // Start the Signup activity
+            Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+            startActivityForResult(intent, REQUEST_SIGNUP);
         });
     }
 
@@ -81,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
-        Call<Void> call = apiService.login(new User("", "", email, password));
+        Call<Void> call = apiService.login(new User("", email, password));
 
         call.enqueue(new Callback<Void>() {
             @Override

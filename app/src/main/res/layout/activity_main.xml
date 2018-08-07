@@ -27,42 +27,32 @@
             app:expandedTitleTextAppearance="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:background="@color/main_grey"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/backdrop"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop"
-                    app:layout_collapseMode="parallax" />
+                    android:id="@+id/imageView"
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginTop="20dp"
+                    app:srcCompat="@drawable/main_cover" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="170dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/imageView"
 
-                    <TextView
-                        android:id="@+id/main_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/backdrop_title"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/backdrop_title" />
+                    app:srcCompat="@drawable/dont_miss" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/backdrop_subtitle"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/backdrop_subtitle" />
-
-                </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/gallery_toolbar"
@@ -77,23 +67,6 @@
 
     <include layout="@layout/content_main" />
 
-<!--    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addEventButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="end|bottom"
-        android:layout_marginBottom="30dp"
-        android:layout_marginRight="30dp"
-        android:clickable="true"
-        android:onClick="onAddEventClicked"
-        android:tint="@color/primary_dark"
-        app:backgroundTint="@color/aluminum"
-        app:rippleColor="@color/primary_dark"
-        app:srcCompat="@android:drawable/ic_input_add" />-->
-
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/multiple_actions"
         android:layout_width="wrap_content"
@@ -104,8 +77,8 @@
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="30dp"
         android:layout_marginRight="30dp"
-        app:fab_addButtonColorNormal="@color/blue"
-        app:fab_addButtonColorPressed="@color/blue_semi_transparent_pressed"
+        app:fab_addButtonColorNormal="@color/primary_dark"
+        app:fab_addButtonColorPressed="@color/primary"
         app:fab_addButtonPlusIconColor="@color/white_pressed"
         android:layout_marginEnd="16dp">
 
@@ -115,19 +88,19 @@
             android:layout_height="wrap_content"
             android:onClick="onAddEventClicked"
             app:fab_icon="@drawable/ic_new_event"
-            app:fab_colorNormal="@color/blue"
+            app:fab_colorNormal="@color/primary_dark"
             app:fab_title="Create New Event"
-            app:fab_colorPressed="@color/blue_semi_transparent_pressed"/>
+            app:fab_colorPressed="@color/primary"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/scan_barcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onScanQRClicked"
-            app:fab_colorNormal="@color/blue"
+            app:fab_colorNormal="@color/primary_dark"
             app:fab_icon="@drawable/ic_qr"
             app:fab_title="Scan Barcode"
-            app:fab_colorPressed="@color/blue_semi_transparent_pressed"/>
+            app:fab_colorPressed="@color/primary"/>
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
