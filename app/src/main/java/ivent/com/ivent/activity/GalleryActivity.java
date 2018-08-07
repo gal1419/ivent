@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ActionBarContextView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -46,6 +48,7 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
     GalleryAdapter galleryAdapter;
     ImageView noPicturesBox;
     ImageView noPicturesText;
+    AppBarLayout appBarLayout;
     ApiService apiService = RestClient.getApiService();
     DownloadManager downloadManager;
     ArrayList<Picture> eventPictures = new ArrayList<>();
@@ -53,6 +56,7 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
     boolean isMultiSelect = false;
     List<Long> selectedIds = new ArrayList<>();
     String eventId;
+    String eventTitle;
     ArrayList<Long> list = new ArrayList<>();
 
 
@@ -62,9 +66,12 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
         setContentView(R.layout.activity_event_pictures);
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         eventId = String.valueOf(getIntent().getExtras().get("eventId"));
+        eventTitle = String.valueOf(getIntent().getExtras().get("eventTitle"));
         boolean shouldOpenPicker = (boolean) getIntent().getExtras().get("shouldOpenPicker");
+        appBarLayout = findViewById(R.id.gallery_app_bar);
 
         Toolbar toolbar = findViewById(R.id.gallery_toolbar);
+        toolbar.setTitle(eventTitle);
         setSupportActionBar(toolbar);
 
         Call<List<Picture>> call = apiService.getEventPictures(eventId);
@@ -134,6 +141,7 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
                     isMultiSelect = true;
 
                     if (actionMode == null) {
+                        appBarLayout.setVisibility(View.GONE);
                         actionMode = startActionMode(GalleryActivity.this);
                     }
                 }
@@ -244,6 +252,7 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
+        appBarLayout.setVisibility(View.VISIBLE);
         actionMode = null;
         isMultiSelect = false;
         selectedIds = new ArrayList<>();

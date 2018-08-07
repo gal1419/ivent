@@ -15,16 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import ivent.com.ivent.R;
 import ivent.com.ivent.activity.EventDetailsActivity;
 import ivent.com.ivent.activity.GalleryActivity;
-import ivent.com.ivent.R;
-import ivent.com.ivent.activity.NewGalleryImageActivity;
 import ivent.com.ivent.model.Event;
 import ivent.com.ivent.rest.AuthHeaders;
 
@@ -80,6 +78,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                     intent = new Intent(context, GalleryActivity.class);
                     intent.putExtra("shouldOpenPicker", true);
                     intent.putExtra("eventId", eventList.get(position).getId());
+                    intent.putExtra("eventTitle", eventList.get(position).getTitle());
                     context.startActivity(intent);
                     return true;
                 case R.id.action_view_event_details:
@@ -124,6 +123,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             view.setOnClickListener(v -> {
                 Intent intent = new Intent(context, GalleryActivity.class);
                 intent.putExtra("eventId", eventId);
+                intent.putExtra("eventTitle", title.getText());
                 intent.putExtra("shouldOpenPicker", false);
                 context.startActivity(intent);
             });
