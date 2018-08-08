@@ -1,7 +1,10 @@
 package ivent.com.ivent.activity;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -25,9 +28,11 @@ import ivent.com.ivent.DepthPageTransformer;
 import ivent.com.ivent.R;
 import ivent.com.ivent.model.Picture;
 import ivent.com.ivent.rest.AuthHeaders;
+import ivent.com.ivent.service.AuthenticationService;
 
 public class ImageDetailsActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private DownloadManager downloadManager;
 
     public ArrayList<Picture> data = new ArrayList<>();
     int pos;
@@ -39,6 +44,8 @@ public class ImageDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_details);
+
+        downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
         toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
@@ -85,19 +92,28 @@ public class ImageDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_details, menu);
+        getMenuInflater().inflate(R.menu.menu_select, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_download) {
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("http").encodedAuthority("10.0.2.2:8080")
+                    .appendPath("picture")
+                    .appendPath(String.valueOf(data.get(pos).getId()));
+
+            DownloadManager.Request request = new DownloadManager.Request(builder.build());
+            request.setTitle("Picture " + id + ".png");
+            request.setDescription("Picture " + id + ".png");
+            request.addRequestHeader("Authorization", AuthenticationService.getAuthToken());
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+            request.setVisibleInDownloadsUi(true);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/Ivent/" + "/" + "Picture " + id + ".png");
+            downloadManager.enqueue(request);
             return true;
         }
 
