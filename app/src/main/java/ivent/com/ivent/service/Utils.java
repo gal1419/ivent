@@ -2,11 +2,20 @@ package ivent.com.ivent.service;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+
+import java.util.List;
+
+import ivent.com.ivent.rest.AuthHeaders;
+import ivent.com.ivent.rest.RestClient;
 
 /**
  * Created by galmalachi on 23/06/2018.
@@ -29,6 +38,21 @@ public class Utils {
         cursor.close();
 
         return path;
+    }
+
+    public static Uri getRestUri(List<String> paths) {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(RestClient.SCHEMA).encodedAuthority(RestClient.SERVER_ADDRESS);
+        paths.forEach(builder::appendPath);
+        return builder.build();
+    }
+
+    public static void downloadWithGlide(List<String> paths, Context context, ImageView imageView) {
+        Glide.with(context)
+                .load(AuthHeaders.getGlideUrlWithHeaders(getRestUri(paths).toString()))
+                .thumbnail(0.5f)
+                .crossFade()
+                .into(imageView);
     }
 
     public static void hideKeyboard(Activity activity) {

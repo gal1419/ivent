@@ -2,6 +2,7 @@ package ivent.com.ivent.rest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +21,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RestClient {
-    private static final String BASE_URL = "http://10.0.2.2:8080/";
+    public static String SCHEMA = "http";
+    public static String SERVER_ADDRESS = "ff83ba67.ngrok.io"; // "10.0.2.2";
+    public static String SERVER_PORT = ""; // ":8080";
+    private static final String BASE_URL = SCHEMA + "://" + SERVER_ADDRESS + SERVER_PORT; //http://10.0.2.2:8080/";
     private static Context context;
     private static ApiService apiService = null;
 

@@ -22,6 +22,7 @@ import java.util.List;
 import ivent.com.ivent.R;
 import ivent.com.ivent.model.Picture;
 import ivent.com.ivent.rest.AuthHeaders;
+import ivent.com.ivent.service.Utils;
 
 /**
  * Created by galmalachi on 06/04/2018.
@@ -58,18 +59,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((MyItemHolder) holder).mImg.setForeground(new ColorDrawable(ContextCompat.getColor(context,android.R.color.transparent)));
         }
 
-        // loading image using Glide library
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http").encodedAuthority("10.0.2.2:8080")
-                .appendPath("picture")
-                .appendPath(String.valueOf(image.getId()));
-
-        Glide.with(context)
-                .load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString()))
-                .thumbnail(0.5f)
-                .crossFade()
-                .into(((MyItemHolder) holder).mImg);
-
+        List<String> paths = new ArrayList<>();
+        paths.add("picture");
+        paths.add(String.valueOf(image.getId()));
+        Utils.downloadWithGlide(paths, context, ((MyItemHolder) holder).mImg);
     }
 
     @Override

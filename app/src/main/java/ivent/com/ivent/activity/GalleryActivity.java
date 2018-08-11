@@ -38,6 +38,7 @@ import ivent.com.ivent.model.Picture;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.RestClient;
 import ivent.com.ivent.service.AuthenticationService;
+import ivent.com.ivent.service.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -231,12 +232,11 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
         switch (menuItem.getItemId()) {
             case R.id.action_download:
                 for (Long id : selectedIds) {
-                    Uri.Builder builder = new Uri.Builder();
-                    builder.scheme("http").encodedAuthority("10.0.2.2:8080")
-                            .appendPath("picture")
-                            .appendPath(String.valueOf(id));
+                    List<String> paths = new ArrayList<>();
+                    paths.add("picture");
+                    paths.add(String.valueOf(id));
 
-                    DownloadManager.Request request = new DownloadManager.Request(builder.build());
+                    DownloadManager.Request request = new DownloadManager.Request(Utils.getRestUri(paths));
                     request.setTitle("Picture " + id + ".png");
                     request.setDescription("Picture " + id + ".png");
                     request.addRequestHeader("Authorization", AuthenticationService.getAuthToken());

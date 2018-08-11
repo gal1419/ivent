@@ -18,17 +18,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import java.util.ArrayList;
+import java.util.List;
 
-import ivent.com.ivent.Adapter.GalleryAdapter;
 import ivent.com.ivent.DepthPageTransformer;
 import ivent.com.ivent.R;
 import ivent.com.ivent.model.Picture;
-import ivent.com.ivent.rest.AuthHeaders;
 import ivent.com.ivent.service.AuthenticationService;
+import ivent.com.ivent.service.Utils;
 
 public class ImageDetailsActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -101,12 +98,11 @@ public class ImageDetailsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_download) {
-            Uri.Builder builder = new Uri.Builder();
-            builder.scheme("http").encodedAuthority("10.0.2.2:8080")
-                    .appendPath("picture")
-                    .appendPath(String.valueOf(data.get(pos).getId()));
+            List<String> paths = new ArrayList<>();
+            paths.add("picture");
+            paths.add(String.valueOf(data.get(pos).getId()));
 
-            DownloadManager.Request request = new DownloadManager.Request(builder.build());
+            DownloadManager.Request request = new DownloadManager.Request(Utils.getRestUri(paths));
             request.setTitle("Picture " + id + ".png");
             request.setDescription("Picture " + id + ".png");
             request.addRequestHeader("Authorization", AuthenticationService.getAuthToken());
@@ -198,17 +194,12 @@ public class ImageDetailsActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-            final ImageView imageView = (ImageView) rootView.findViewById(R.id.detail_image);
+            final ImageView imageView = rootView.findViewById(R.id.detail_image);
+            List<String> paths = new ArrayList<>();
+            paths.add("picture");
+            paths.add(imageId);
 
-            Uri.Builder builder = new Uri.Builder();
-            builder.scheme("http").encodedAuthority("10.0.2.2:8080")
-                    .appendPath("picture")
-                    .appendPath(imageId);
-
-            Glide.with(getActivity())
-                    .load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString()))
-                    .thumbnail(0.1f)
-                    .into(imageView);
+            Utils.downloadWithGlide(paths, getActivity(), imageView);
 
             return rootView;
         }

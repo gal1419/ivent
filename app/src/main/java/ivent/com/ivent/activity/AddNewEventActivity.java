@@ -77,7 +77,15 @@ public class AddNewEventActivity extends AppCompatActivity implements IPickResul
 
 
     private void uploadImageToServer() throws Exception {
-        File file = new File(Utils.getPathFromURI(getContentResolver(), filePath));
+
+        File file;
+
+        if (filePath.getScheme().equals("file")) {
+            file = new File(filePath.getPath());
+        } else {
+            file = new File(Utils.getPathFromURI(getContentResolver(), filePath));
+        }
+
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);

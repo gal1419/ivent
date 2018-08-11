@@ -1,7 +1,6 @@
 package ivent.com.ivent.activity;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +17,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import net.glxn.qrgen.android.QRCode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,6 +27,7 @@ import ivent.com.ivent.model.Event;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.AuthHeaders;
 import ivent.com.ivent.rest.RestClient;
+import ivent.com.ivent.service.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -89,17 +90,14 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         eventQRCode = QRCode.from(event.getId().toString()).bitmap();
 
-
-        // loading event main_cover using Glide library
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http").encodedAuthority("10.0.2.2:8080")
-                .appendPath("event")
-                .appendPath("thumbnail")
-                .appendPath(String.valueOf(event.getId()));
+        List<String> paths = new ArrayList<>();
+        paths.add("event");
+        paths.add("thumbnail");
+        paths.add(String.valueOf(event.getId()));
 
         try {
             Glide.with(getApplicationContext())
-                    .load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString()))
+                    .load(AuthHeaders.getGlideUrlWithHeaders(Utils.getRestUri(paths).toString()))
                     .asBitmap()
                     .into(new SimpleTarget<Bitmap>(300,300) {
 

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ivent.com.ivent.R;
@@ -25,6 +26,7 @@ import ivent.com.ivent.activity.EventDetailsActivity;
 import ivent.com.ivent.activity.GalleryActivity;
 import ivent.com.ivent.model.Event;
 import ivent.com.ivent.rest.AuthHeaders;
+import ivent.com.ivent.service.Utils;
 
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder> {
@@ -52,18 +54,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         holder.title.setText(event.getTitle());
         holder.count.setText(String.format("%d participants", event.getParticipants().size()));
 
-        // loading event main_cover using Glide library
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http").encodedAuthority("10.0.2.2:8080")
-                .appendPath("event")
-                .appendPath("thumbnail")
-                .appendPath(String.valueOf(event.getId()));
+        List<String> paths = new ArrayList<>();
+        paths.add("event");
+        paths.add("thumbnail");
+        paths.add(String.valueOf(event.getId()));
 
-        Glide.with(context)
-                .load(AuthHeaders.getGlideUrlWithHeaders(builder.build().toString()))
-                .thumbnail(0.5f)
-                .crossFade()
-                .into(holder.thumbnail);
+        Utils.downloadWithGlide(paths, context, holder.thumbnail);
+
         holder.overflow.setOnClickListener(view -> showPopupMenu(holder.overflow, position));
     }
 
