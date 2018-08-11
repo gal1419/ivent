@@ -52,8 +52,7 @@ public class Utils {
     public static void downloadWithGlide(List<String> paths, Context context, ImageView imageView) {
         Glide.with(context)
                 .load(AuthHeaders.getGlideUrlWithHeaders(getRestUri(paths).toString()))
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .thumbnail(0.5f)
                 .crossFade()
                 .into(imageView);
