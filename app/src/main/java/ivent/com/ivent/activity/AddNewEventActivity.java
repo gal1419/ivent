@@ -1,20 +1,16 @@
 package ivent.com.ivent.activity;
 
-import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.vansuita.pickimage.bean.PickResult;
@@ -23,9 +19,9 @@ import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
 import java.io.File;
-import java.util.UUID;
 
 import ivent.com.ivent.R;
+import ivent.com.ivent.model.Event;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.RestClient;
 import ivent.com.ivent.service.Utils;
@@ -44,7 +40,6 @@ public class AddNewEventActivity extends AppCompatActivity implements IPickResul
     private EditText eventName;
     private ImageView eventImageView;
     private ApiService apiService = RestClient.getApiService();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,45 +62,83 @@ public class AddNewEventActivity extends AppCompatActivity implements IPickResul
     }
 
     public void onEventAdd(View view) {
-        try {
-            uploadImageToServer();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        if (validate()) {
+            try {
+                addNewEvent();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
+
     }
 
 
-    private void uploadImageToServer() throws Exception {
+    private void addNewEvent() throws Exception {
+
+        final ProgressDialog progressDialog = new ProgressDialog(AddNewEventActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Creating new event");
+        progressDialog.show();
 
         File file;
-
         if (filePath.getScheme().equals("file")) {
             file = new File(filePath.getPath());
         } else {
             file = new File(Utils.getPathFromURI(getContentResolver(), filePath));
         }
 
-
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
         RequestBody title = RequestBody.create(MediaType.parse("text/plain"), eventName.getText().toString().trim());
         RequestBody address = RequestBody.create(MediaType.parse("text/plain"), eventAddress.getText().toString().trim());
 
-        Call<ResponseBody> req = apiService.addEvent(body, title, address);
-        req.enqueue(new Callback<ResponseBody>() {
+        Call<Event> req = apiService.addEvent(body, title, address);
+        req.enqueue(new Callback<Event>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.i("AddNewEventActivity", "Picture was uploaded");
+            public void onResponse(Call<Event> call, Response<Event> response) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result", response.body());
+                setResult(1, returnIntent);
+                progressDialog.dismiss();
                 finish();
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
+            public void onFailure(Call<Event> call, Throwable t) {
+                Log.e("AddNewEventActivity", t.getMessage());
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result", "");
+                setResult(2);
+                progressDialog.dismiss();
                 finish();
             }
         });
+    }
+
+    public boolean validate() {
+        boolean valid = true;
+
+        String name = eventName.getText().toString();
+        String address = eventAddress.getText().toString();
+
+        if (name.isEmpty()) {
+            eventName.setError("event name cannot be empty");
+            valid = false;
+        } else {
+            eventName.setError(null);
+        }
+
+        if (address.isEmpty()) {
+            eventAddress.setError("event address cannot be empty");
+            valid = false;
+        } else {
+            eventAddress.setError(null);
+        }
+
+        return valid;
     }
 
     @Override

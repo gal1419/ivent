@@ -4,6 +4,7 @@ package ivent.com.ivent.Adapter;
  * Created by galmalachi on 10/02/2018.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -81,8 +82,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                 case R.id.action_view_event_details:
                     intent = new Intent(context, EventDetailsActivity.class);
                     intent.putExtra("event", eventList.get(position));
-                    intent.putExtra("enableCheckIn", true);
-                    context.startActivity(intent);
+                    intent.putExtra("enableCheckIn", false);
+                    ((Activity) context).startActivityForResult(intent, 2);
                     return true;
                 default:
             }

@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.vansuita.pickimage.bean.PickResult;
@@ -45,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements IPickResult {
     private EventAdapter adapter;
     private List<Event> eventList = new ArrayList<>();
     private ApiService apiService = RestClient.getApiService();
+    public final int NEW_EVENT_OK_RESULT_CODE = 1;
+    public final int NEW_EVENT_FAIL_RESULT_CODE = 2;
+    public final int DELETE_EVENT_OK_RESULT_CODE = 3;
+    public final int DELETE_EVENT_FAIL_RESULT_CODE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements IPickResult {
 
     public void onAddEventClicked(View view) {
         Intent intent = new Intent(getApplicationContext(), AddNewEventActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     public void onScanQRClicked(View view) {
@@ -161,15 +166,31 @@ public class MainActivity extends AppCompatActivity implements IPickResult {
     }
 
     @Override
-    public void onBackPressed() {
-        // disable going back to the MainActivity
-        moveTaskToBack(true);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (resultCode) {
+            case NEW_EVENT_OK_RESULT_CODE:
+                this.eventList.add((Event) data.getExtras().get("result"));
+                this.adapter.notifyDataSetChanged();
+                break;
+            case NEW_EVENT_FAIL_RESULT_CODE:
+                Toast.makeText(MainActivity.this, "There was a problem creating your event, try again later.", Toast.LENGTH_LONG).show();
+                break;
+            case DELETE_EVENT_OK_RESULT_CODE:
+                this.eventList.remove((Event) data.getExtras().get("result"));
+                this.adapter.notifyDataSetChanged();
+                break;
+            case DELETE_EVENT_FAIL_RESULT_CODE:
+                Toast.makeText(MainActivity.this, "There was a problem deleting your event, try again later.", Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        prepareEvents();
+    public void onBackPressed() {
+        // disable going back to the MainActivity
+        moveTaskToBack(true);
     }
 
     /**

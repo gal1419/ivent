@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.i(TAG, "success");
                 if (response.raw().code() == 200) {
-                    onLoginSuccess(response.headers().get("authorization"));
+                    onLoginSuccess(response.headers().get("authorization"), email);
                 } else {
                     onLoginFailed();
                 }
@@ -98,9 +98,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
                 this.finish();
             }
         }
@@ -112,10 +109,9 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void onLoginSuccess(String authToken) {
+    public void onLoginSuccess(String authToken, String userEmail) {
         AuthenticationService.setAuthToken(getApplicationContext(), authToken);
-        Log.i("token ", AuthenticationService.getAuthToken(getApplicationContext()));
-
+        AuthenticationService.setUserEmail(getApplicationContext(), userEmail);
         loginButton.setEnabled(true);
         finish();
 

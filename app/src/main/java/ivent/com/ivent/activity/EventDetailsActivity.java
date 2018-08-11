@@ -1,5 +1,8 @@
 package ivent.com.ivent.activity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +30,7 @@ import ivent.com.ivent.model.Event;
 import ivent.com.ivent.rest.ApiService;
 import ivent.com.ivent.rest.AuthHeaders;
 import ivent.com.ivent.rest.RestClient;
+import ivent.com.ivent.service.AuthenticationService;
 import ivent.com.ivent.service.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +42,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     private Bitmap eventQRCode;
     private Bitmap eventCover;
     private ApiService apiService = RestClient.getApiService();
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         Event event = getIntent().getExtras().getParcelable("event");
         boolean enableCheckIn = getIntent().getExtras().getBoolean("enableCheckIn");
 
-        Button checkInButton = findViewById(R.id.event_details_check_in_button);
+        Button checkInOrDeleteButton = findViewById(R.id.event_details_button);
         TextView eventTitle = findViewById(R.id.event_details_title);
         TextView eventAddress = findViewById(R.id.event_details_address);
         TextView eventOwner = findViewById(R.id.event_details_owner);
@@ -58,11 +63,12 @@ public class EventDetailsActivity extends AppCompatActivity {
         eventTitle.setText(event.getTitle());
         eventAddress.setText(event.getAddress());
         eventOwner.setText(event.getOwner().getFullName());
-        eventParticipants.setText(String.valueOf(event.getParticipants().size()));
+        eventParticipants.setText(String.valueOf(event.getParticipants().size()) + " Participants");
 
         if (enableCheckIn) {
-            checkInButton.setVisibility(View.VISIBLE);
-            checkInButton.setOnClickListener(v -> {
+            checkInOrDeleteButton.setVisibility(View.VISIBLE);
+            checkInOrDeleteButton.setText("Check In");
+            checkInOrDeleteButton.setOnClickListener(v -> {
 
                 Call<List<Event>> call = apiService.addUserToEvent(String.valueOf(event.getId()));
                 call.enqueue(new Callback<List<Event>>() {
@@ -80,6 +86,42 @@ public class EventDetailsActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<List<Event>> call, Throwable throwable) {
+                    }
+                });
+
+            });
+        }
+
+        if (event.getOwner().getEmail().equals(AuthenticationService.getUserEmail(EventDetailsActivity.this))) {
+            checkInOrDeleteButton.setVisibility(View.VISIBLE);
+            checkInOrDeleteButton.setText("Delete Event");
+
+            checkInOrDeleteButton.setOnClickListener(v -> {
+
+                progressDialog = new ProgressDialog(EventDetailsActivity.this,
+                        R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Deleting Event...");
+                progressDialog.show();
+
+                Call<Event> call = apiService.deleteByEventId(String.valueOf(event.getId()));
+                call.enqueue(new Callback<Event>() {
+                    @Override
+                    public void onResponse(Call<Event> call, Response<Event> response) {
+                        if (response.isSuccessful()) {
+                            Intent returnIntent = new Intent();
+                            returnIntent.putExtra("result", response.body());
+                            setResult(3, returnIntent);
+                            progressDialog.dismiss();
+                            finish();
+                        } else {
+                            handleError();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Event> call, Throwable throwable) {
+                        handleError();
                     }
                 });
 
@@ -114,7 +156,13 @@ public class EventDetailsActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("Event Details Activity", e.getMessage());
         }
+    }
 
-
+    private void handleError() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result", "");
+        setResult(4, returnIntent);
+        progressDialog.dismiss();
+        finish();
     }
 }

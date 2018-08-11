@@ -75,13 +75,13 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
         call.enqueue(new Callback<List<Picture>>() {
             @Override
             public void onResponse(Call<List<Picture>> call, Response<List<Picture>> response) {
-                eventPictures.addAll(response.body());
 
-                if (eventPictures.isEmpty()) {
+                if (response.body() == null || response.body().isEmpty()) {
                     displayNoImagesMessage();
-                } else {
-                    displayImagesGrid();
                 }
+
+                eventPictures.addAll(response.body());
+                displayImagesGrid();
             }
 
             @Override

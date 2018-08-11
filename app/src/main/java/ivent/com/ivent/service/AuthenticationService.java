@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 public class AuthenticationService {
 
     private static String authToken = "";
+    private static String userEmail = "";
 
     public static String getAuthToken() {
         return authToken;
@@ -40,4 +41,17 @@ public class AuthenticationService {
         sharedPreferences.edit().remove("login-token");
     }
 
+    public static void setUserEmail(Context context, String email) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("ivent.com.ivent", Context.MODE_PRIVATE);
+        sharedPreferences.edit().putString("user-email", email).apply();
+    }
+
+    public static String getUserEmail(Context context) {
+        if (!userEmail.equals("")) {
+            return userEmail;
+        }
+        SharedPreferences sharedPreferences = context.getSharedPreferences("ivent.com.ivent", Context.MODE_PRIVATE);
+        userEmail = sharedPreferences.getString("user-email", "");
+        return userEmail;
+    }
 }

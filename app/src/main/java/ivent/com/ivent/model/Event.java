@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by galmalachi on 10/02/2018.
@@ -144,4 +145,18 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    @Override
+    public boolean equals(Object obj) {
+         if (obj == this) {
+             return true;
+         }
+
+        if (!(obj instanceof Event)) {
+            return false;
+        }
+
+        Event e = (Event) obj;
+        return Objects.equals(this.getId(), e.getId());
+    }
 }

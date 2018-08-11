@@ -10,6 +10,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -39,6 +40,9 @@ public interface ApiService {
     @GET("event/{eventId}")
     Call<Event> getEventById(@Path("eventId") String eventId);
 
+    @DELETE("event/{eventId}")
+    Call<Event> deleteByEventId(@Path("eventId") String eventId);
+
     @Multipart
     @POST("picture/add")
     Call<Picture> addPicture(@Part MultipartBody.Part image, @Part("eventId") RequestBody eventId, @Part("description") RequestBody description);
@@ -49,7 +53,7 @@ public interface ApiService {
 
     @Multipart
     @POST("event/add")
-    Call<ResponseBody> addEvent(@Part MultipartBody.Part image, @Part("title") RequestBody title, @Part("address") RequestBody address);
+    Call<Event> addEvent(@Part MultipartBody.Part image, @Part("title") RequestBody title, @Part("address") RequestBody address);
 
     @POST("users/add-event/{eventId}")
     Call<List<Event>> addUserToEvent(@Path("eventId") String eventId);
