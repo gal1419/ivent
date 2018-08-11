@@ -70,10 +70,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-
-                //noinspection ConstantConditions
                 setTitle(data.get(position).getDescription());
-
             }
 
             @Override

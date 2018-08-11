@@ -109,7 +109,7 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
 
     private void displayImagesGrid() {
         Context context = this;
-        mRecyclerView = (RecyclerView) findViewById(R.id.event_gallery);
+        mRecyclerView = findViewById(R.id.event_gallery);
         mRecyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         mRecyclerView.setHasFixedSize(true);
 
@@ -161,10 +161,13 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
                     selectedIds.add(data.getId());
 
                 if (selectedIds.size() > 0)
-                    actionMode.setTitle(String.valueOf(selectedIds.size())); //show selected item count on action mode.
+                    //show selected item count on action mode.
+                    actionMode.setTitle(String.valueOf(selectedIds.size()));
                 else {
-                    actionMode.setTitle(""); //remove item count from action mode.
-                    actionMode.finish(); //hide action mode.
+                    //remove item count from action mode.
+                    //hide action mode
+                    actionMode.setTitle("");
+                    actionMode.finish();
                 }
                 galleryAdapter.setSelectedIds(selectedIds);
 
@@ -237,6 +240,7 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
                     request.setDescription("Picture " + id + ".png");
                     request.addRequestHeader("Authorization", AuthenticationService.getAuthToken());
                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                    request.setShowRunningNotification(true);
                     request.setVisibleInDownloadsUi(true);
                     request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/Ivent/" + "/" + "Picture " + id + ".png");
                     list.add(downloadManager.enqueue(request));

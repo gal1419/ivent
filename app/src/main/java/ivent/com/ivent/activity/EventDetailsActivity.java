@@ -51,7 +51,6 @@ public class EventDetailsActivity extends AppCompatActivity {
         TextView eventTitle = findViewById(R.id.event_details_title);
         TextView eventAddress = findViewById(R.id.event_details_address);
         TextView eventOwner = findViewById(R.id.event_details_owner);
-        TextView eventPictureNumber = findViewById(R.id.event_details_photos_number);
         TextView eventParticipants = findViewById(R.id.event_details_participants);
         eventThumbnailOrQR = findViewById(R.id.event_details_thumbnail_qr);
         Switch aSwitch = findViewById(R.id.event_details_image_switch);
@@ -59,7 +58,6 @@ public class EventDetailsActivity extends AppCompatActivity {
         eventTitle.setText(event.getTitle());
         eventAddress.setText(event.getAddress());
         eventOwner.setText(event.getOwner().getFullName());
-        eventPictureNumber.setText("11");
         eventParticipants.setText(String.valueOf(event.getParticipants().size()));
 
         if (enableCheckIn) {

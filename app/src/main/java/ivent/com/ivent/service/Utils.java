@@ -11,9 +11,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
+import ivent.com.ivent.R;
 import ivent.com.ivent.rest.AuthHeaders;
 import ivent.com.ivent.rest.RestClient;
 
@@ -50,6 +52,8 @@ public class Utils {
     public static void downloadWithGlide(List<String> paths, Context context, ImageView imageView) {
         Glide.with(context)
                 .load(AuthHeaders.getGlideUrlWithHeaders(getRestUri(paths).toString()))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .thumbnail(0.5f)
                 .crossFade()
                 .into(imageView);

@@ -8,8 +8,7 @@
     android:layout_height="match_parent"
     android:paddingTop="40dp"
     android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:background="@color/accent">
+    android:paddingRight="24dp">
 
     <TextView
         android:id="@+id/event_details_title"
@@ -18,7 +17,7 @@
         android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:textColor="@color/black"
+        android:textColor="@color/accent"
         android:textSize="34sp"/>
 
     <Switch
@@ -31,18 +30,21 @@
     <ImageView
         android:id="@+id/event_details_thumbnail_qr"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="300dp"
+        android:layout_marginBottom="50dp"
+        />
 
     <TextView
         android:id="@+id/event_details_owner"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:drawableLeft="@drawable/ic_key"
+        android:drawableLeft="@drawable/ic_white_owner"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:includeFontPadding="false"
-        android:textColor="@color/black"
+        android:textColor="@color/accent"
+        android:layout_marginBottom="20dp"
         android:textSize="24sp"/>
 
     <TextView
@@ -52,9 +54,10 @@
         android:gravity="center_vertical"
         android:fontFamily="sans-serif-smallcaps"
         android:includeFontPadding="false"
-        android:textColor="@color/black"
-        android:drawableLeft="@drawable/ic_participants"
+        android:textColor="@color/accent"
+        android:drawableLeft="@drawable/ic_white_participants"
         android:drawablePadding="8dp"
+        android:layout_marginBottom="20dp"
         android:textSize="24sp"/>
 
     <TextView
@@ -64,21 +67,10 @@
         android:gravity="center_vertical"
         android:fontFamily="sans-serif-smallcaps"
         android:includeFontPadding="false"
-        android:textColor="@color/black"
-        android:drawableLeft="@drawable/ic_address"
+        android:textColor="@color/accent"
+        android:drawableLeft="@drawable/ic_white_address"
         android:drawablePadding="8dp"
-        android:textSize="24sp"/>
-
-    <TextView
-        android:id="@+id/event_details_photos_number"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:gravity="center_vertical"
-        android:fontFamily="sans-serif-smallcaps"
-        android:includeFontPadding="false"
-        android:textColor="@color/black"
-        android:drawableLeft="@drawable/ic_picture"
-        android:drawablePadding="8dp"
+        android:layout_marginBottom="20dp"
         android:textSize="24sp"/>
 
     <Button
@@ -86,5 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="invisible"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="50dp"
         android:text="@string/event_details_check_in"/>
 </LinearLayout>
