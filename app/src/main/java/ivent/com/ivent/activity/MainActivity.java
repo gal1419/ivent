@@ -19,6 +19,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.listeners.IPickResult;
 
 import net.glxn.qrgen.android.QRCode;
 
@@ -35,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IPickResult {
 
     private RecyclerView recyclerView;
     private EventAdapter adapter;
@@ -77,8 +81,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onScanQRClicked(View view) {
-        Intent intent = new Intent(getApplicationContext(), ScanQRActivity.class);
-        startActivity(intent);
+        PickSetup setup = new PickSetup()
+                .setGalleryIcon(R.mipmap.gallery_colored)
+                .setCameraIcon(R.mipmap.camera_colored);
+        PickImageDialog
+                .build(setup)
+                .show(this);
     }
 
     /**
@@ -170,6 +178,16 @@ public class MainActivity extends AppCompatActivity {
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    @Override
+    public void onPickResult(PickResult pickResult) {
+        if (pickResult.getError() == null) {
+            Intent intent = new Intent(getApplicationContext(), ScanQRActivity.class);
+            intent.putExtra("qrPath", pickResult.getPath());
+            intent.putExtra("qrUri", pickResult.getUri());
+            startActivity(intent);
+        }
     }
 
     /**
