@@ -2,11 +2,15 @@ package ivent.com.ivent.activity;
 
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,8 +58,8 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
     List<Long> selectedIds = new ArrayList<>();
     String eventId;
     String eventTitle;
-    ArrayList<Long> list = new ArrayList<>();
-
+    ArrayList<Long> downloadsList = new ArrayList<>();
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +97,9 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
         if (shouldOpenPicker) {
             openPicker();
         }
+
+        broadcastReceiver = getDownloadListener();
+        registerReceiver(broadcastReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     public void onAddPictureClicked(View view) {
@@ -142,7 +149,6 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
                         actionMode = startActionMode(GalleryActivity.this);
                     }
                 }
-
                 multiSelect(position);
             }
         }));
@@ -243,8 +249,9 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
                     request.setShowRunningNotification(true);
                     request.setVisibleInDownloadsUi(true);
                     request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/Ivent/" + "/" + "Picture " + id + ".png");
-                    list.add(downloadManager.enqueue(request));
+                    downloadsList.add(downloadManager.enqueue(request));
                 }
+                Toast.makeText(GalleryActivity.this, "Downloading...", Toast.LENGTH_LONG).show();
                 return true;
         }
         return false;
@@ -259,4 +266,33 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
         galleryAdapter.setSelectedIds(new ArrayList<>());
     }
 
+    private BroadcastReceiver getDownloadListener() {
+        return new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                long referenceId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                downloadsList.remove(referenceId);
+
+                if (downloadsList.isEmpty()) {
+                    Toast.makeText(GalleryActivity.this, "All downloads completed succsessfuly", Toast.LENGTH_LONG).show();
+                    NotificationCompat.Builder mBuilder =
+                            new NotificationCompat.Builder(GalleryActivity.this)
+                                    .setSmallIcon(R.mipmap.ic_launcher)
+                                    .setContentTitle("Ivent")
+                                    .setContentText("All Download completed");
+
+
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(455, mBuilder.build());
+                }
+
+            }
+        };
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
 }

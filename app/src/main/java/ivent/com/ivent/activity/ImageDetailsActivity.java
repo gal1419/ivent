@@ -42,19 +42,13 @@ public class ImageDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image_details);
 
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-
         toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
-
         data = getIntent().getParcelableArrayListExtra("data");
         pos = getIntent().getIntExtra("pos", 0);
-
         setTitle(data.get(pos).getDescription());
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), data);
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setPageTransformer(true, new DepthPageTransformer());
 
@@ -64,7 +58,6 @@ public class ImageDetailsActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -73,18 +66,14 @@ public class ImageDetailsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+            public void onPageScrollStateChanged(int state) {}
         });
 
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_select, menu);
         return true;
     }
@@ -122,14 +111,11 @@ public class ImageDetailsActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position, data.get(position).getDescription(), String.valueOf(data.get(position).getId()));
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return data.size();
         }
 
@@ -196,7 +182,6 @@ public class ImageDetailsActivity extends AppCompatActivity {
             paths.add(imageId);
 
             Utils.downloadWithGlide(paths, getActivity(), imageView);
-
             return rootView;
         }
 

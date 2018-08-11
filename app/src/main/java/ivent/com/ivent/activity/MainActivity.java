@@ -36,33 +36,33 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements IPickResult {
 
-    private RecyclerView recyclerView;
     private EventAdapter adapter;
     private List<Event> eventList = new ArrayList<>();
     private ApiService apiService = RestClient.getApiService();
-    public final int NEW_EVENT_OK_RESULT_CODE = 1;
-    public final int NEW_EVENT_FAIL_RESULT_CODE = 2;
-    public final int DELETE_EVENT_OK_RESULT_CODE = 3;
-    public final int DELETE_EVENT_FAIL_RESULT_CODE = 4;
+    private ProgressDialog progressDialog;
+    private final int NEW_EVENT_OK_RESULT_CODE = 1;
+    private final int NEW_EVENT_FAIL_RESULT_CODE = 2;
+    private final int DELETE_EVENT_OK_RESULT_CODE = 3;
+    private final int DELETE_EVENT_FAIL_RESULT_CODE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         RestClient.setContext(getApplicationContext());
-
         String loginToken = AuthenticationService.getAuthToken(getApplicationContext());
+
+        // if user is not authenticated, move to loging activity
         if (loginToken.equals("")) {
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         }
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
-
         initCollapsingToolbar();
-        recyclerView = findViewById(R.id.recycler_view);
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         eventList = new ArrayList<>();
         adapter = new EventAdapter(this, eventList);
 
@@ -119,10 +119,11 @@ public class MainActivity extends AppCompatActivity implements IPickResult {
         });
     }
 
-
+    /**
+     * Fetch the events of the logged in user
+     */
     private void prepareEvents() {
-        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this,
-                R.style.AppTheme_Dark_Dialog);
+        progressDialog = new ProgressDialog(MainActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Getting Events...");
         progressDialog.show();
@@ -155,10 +156,14 @@ public class MainActivity extends AppCompatActivity implements IPickResult {
     }
 
     private void onEventsFetchFailed() {
+        // user might not be authenticated or token has expired, return to login
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * handle new event and delete event activity result
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -183,18 +188,14 @@ public class MainActivity extends AppCompatActivity implements IPickResult {
 
     @Override
     public void onBackPressed() {
-        // disable going back to the MainActivity
+        // disable going back from the MainActivity
         moveTaskToBack(true);
     }
 
-    /**
-     * Converting dp to pixel
-     */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
 
+    /**
+     * handle quick photo upload result
+     */
     @Override
     public void onPickResult(PickResult pickResult) {
         if (pickResult.getError() == null) {
@@ -203,6 +204,14 @@ public class MainActivity extends AppCompatActivity implements IPickResult {
             intent.putExtra("qrUri", pickResult.getUri());
             startActivity(intent);
         }
+    }
+
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
     /**
@@ -221,22 +230,22 @@ public class MainActivity extends AppCompatActivity implements IPickResult {
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
+            int position = parent.getChildAdapterPosition(view);
+            int column = position % spanCount;
 
             if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+                outRect.left = spacing - column * spacing / spanCount;
+                outRect.right = (column + 1) * spacing / spanCount;
 
-                if (position < spanCount) { // top edge
+                if (position < spanCount) {
                     outRect.top = spacing;
                 }
-                outRect.bottom = spacing; // item bottom
+                outRect.bottom = spacing;
             } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                outRect.left = column * spacing / spanCount;
+                outRect.right = spacing - (column + 1) * spacing / spanCount;
                 if (position >= spanCount) {
-                    outRect.top = spacing; // item top
+                    outRect.top = spacing;
                 }
             }
         }

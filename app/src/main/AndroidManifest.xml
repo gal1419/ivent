@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ivent.com.ivent">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <!-- App permissions -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />

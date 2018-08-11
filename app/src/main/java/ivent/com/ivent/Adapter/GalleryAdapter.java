@@ -43,7 +43,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         Picture image = imageList.get(position);
 
         if (selectedIds.contains(image.getId())) {
-            //if item is selected then,set foreground color of FrameLayout.
+            //if item is selected then, set foreground color of FrameLayout.
             ((MyItemHolder) holder).mImg.setForeground(new ColorDrawable(ContextCompat.getColor(context, R.color.selectedImageColor)));
         } else {
             //else remove selected item color.

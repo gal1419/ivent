@@ -120,19 +120,17 @@ public class AddNewEventActivity extends AppCompatActivity implements IPickResul
 
         String name = eventName.getText().toString();
         String address = eventAddress.getText().toString();
+        eventName.setError(null);
+        eventAddress.setError(null);
 
         if (name.isEmpty()) {
             eventName.setError("event name cannot be empty");
             valid = false;
-        } else {
-            eventName.setError(null);
         }
 
         if (address.isEmpty()) {
             eventAddress.setError("event address cannot be empty");
             valid = false;
-        } else {
-            eventAddress.setError(null);
         }
 
         return valid;
