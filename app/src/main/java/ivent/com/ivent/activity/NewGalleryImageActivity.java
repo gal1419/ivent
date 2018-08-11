@@ -3,8 +3,8 @@ package ivent.com.ivent.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -82,7 +82,7 @@ public class NewGalleryImageActivity extends AppCompatActivity {
             public void onResponse(Call<ivent.com.ivent.model.Picture> call, Response<ivent.com.ivent.model.Picture> response) {
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result", response.body());
-                setResult(Activity.RESULT_OK,returnIntent);
+                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
 

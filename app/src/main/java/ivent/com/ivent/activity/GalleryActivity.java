@@ -91,7 +91,7 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
         });
 
         if (shouldOpenPicker) {
-           openPicker();
+            openPicker();
         }
     }
 

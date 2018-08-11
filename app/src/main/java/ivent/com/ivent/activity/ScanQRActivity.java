@@ -30,6 +30,7 @@ import retrofit2.Response;
 public class ScanQRActivity extends AppCompatActivity {
     ImageView imageView;
     String imagePath;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,11 +112,11 @@ public class ScanQRActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Event> call, Throwable throwable) {
-                       handleError();
+                        handleError();
                     }
                 });
             } else {
-               handleError();
+                handleError();
             }
         }
 

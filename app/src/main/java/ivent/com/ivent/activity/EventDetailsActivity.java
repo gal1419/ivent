@@ -1,11 +1,10 @@
 package ivent.com.ivent.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -139,7 +138,7 @@ public class EventDetailsActivity extends AppCompatActivity {
             Glide.with(getApplicationContext())
                     .load(AuthHeaders.getGlideUrlWithHeaders(Utils.getRestUri(paths).toString()))
                     .asBitmap()
-                    .into(new SimpleTarget<Bitmap>(300,300) {
+                    .into(new SimpleTarget<Bitmap>(300, 300) {
 
                         @Override
                         public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {

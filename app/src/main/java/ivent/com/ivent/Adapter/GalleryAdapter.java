@@ -1,27 +1,19 @@
 package ivent.com.ivent.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ivent.com.ivent.R;
 import ivent.com.ivent.model.Picture;
-import ivent.com.ivent.rest.AuthHeaders;
 import ivent.com.ivent.service.Utils;
 
 /**
@@ -50,13 +42,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Picture image = imageList.get(position);
 
-        if (selectedIds.contains(image.getId())){
+        if (selectedIds.contains(image.getId())) {
             //if item is selected then,set foreground color of FrameLayout.
             ((MyItemHolder) holder).mImg.setForeground(new ColorDrawable(ContextCompat.getColor(context, R.color.selectedImageColor)));
-        }
-        else {
+        } else {
             //else remove selected item color.
-            ((MyItemHolder) holder).mImg.setForeground(new ColorDrawable(ContextCompat.getColor(context,android.R.color.transparent)));
+            ((MyItemHolder) holder).mImg.setForeground(new ColorDrawable(ContextCompat.getColor(context, android.R.color.transparent)));
         }
 
         List<String> paths = new ArrayList<>();
@@ -70,7 +61,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return imageList.size();
     }
 
-    public Picture getItem(int position){
+    public Picture getItem(int position) {
         return imageList.get(position);
     }
 

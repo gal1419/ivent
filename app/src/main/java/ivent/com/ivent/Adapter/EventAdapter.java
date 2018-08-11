@@ -7,7 +7,6 @@ package ivent.com.ivent.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,8 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +23,6 @@ import ivent.com.ivent.R;
 import ivent.com.ivent.activity.EventDetailsActivity;
 import ivent.com.ivent.activity.GalleryActivity;
 import ivent.com.ivent.model.Event;
-import ivent.com.ivent.rest.AuthHeaders;
 import ivent.com.ivent.service.Utils;
 
 
