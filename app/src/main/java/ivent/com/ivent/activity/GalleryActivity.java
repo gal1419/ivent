@@ -273,7 +273,7 @@ public class GalleryActivity extends AppCompatActivity implements IPickResult, A
                 downloadsList.remove(referenceId);
 
                 if (downloadsList.isEmpty()) {
-                    Toast.makeText(GalleryActivity.this, "All downloads completed succsessfuly", Toast.LENGTH_LONG).show();
+                    Toast.makeText(GalleryActivity.this, "All downloads completed successfully", Toast.LENGTH_LONG).show();
                     NotificationCompat.Builder mBuilder =
                             new NotificationCompat.Builder(GalleryActivity.this)
                                     .setSmallIcon(R.mipmap.ic_launcher)

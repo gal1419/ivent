@@ -1,12 +1,17 @@
 package ivent.com.ivent.activity;
 
 import android.app.DownloadManager;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +37,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
     private DownloadManager downloadManager;
 
     public ArrayList<Picture> data = new ArrayList<>();
+    BroadcastReceiver downloadListener;
     int pos;
 
     Toolbar toolbar;
@@ -69,6 +76,9 @@ public class ImageDetailsActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {}
         });
 
+        downloadListener = getDownloadListener();
+        registerReceiver(downloadListener, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
 
     }
 
@@ -95,10 +105,27 @@ public class ImageDetailsActivity extends AppCompatActivity {
             request.setVisibleInDownloadsUi(true);
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/Ivent/" + "/" + "Picture " + id + ".png");
             downloadManager.enqueue(request);
+            Toast.makeText(ImageDetailsActivity.this, "Downloading...", Toast.LENGTH_LONG).show();
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private BroadcastReceiver getDownloadListener() {
+        return new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                Toast.makeText(context, "Download completed successfully", Toast.LENGTH_LONG).show();
+            }
+        };
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(downloadListener);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
